@@ -125,16 +125,15 @@ if menu_selection == "🏟️ The Pavilion (Dashboard)":
         st.markdown(f"<div class='stadium-card'><h5>Accumulated Runs Score</h5><h2 style='color: #10b981;'>{st.session_state.stadium_runs} Runs</h2></div>", unsafe_allow_html=True)
 
     energy_input = st.select_slider("What is your physical baseline battery level after work?", options=["0%", "25%", "50%", "100%"])
-    
     if "0%" in energy_input:
-        st.error("🚨 Critical Fatigue. Do not write complex loops tonight. Head over to the chat tab, ask a quick question, protect your mindset, and rest.")
+        st.error("🚨 Critical Fatigue. Take a short breather, read your roadmap, and rest up.")
     else:
         st.success("🔥 Powerplay active! Dive into the logic training blocks.")
 
     st.markdown("""
     <div class='stadium-card'>
         <h3 style='color: #e23636;'>⚔️ Deadpool's Mentorship Blueprint</h3>
-        <p><i>"Look at you go, Vamshi. You deal with angry chat logs and high-pressure escalations for 12 hours a day. Your brain is already hardened. AI engineering is just teaching a machine how to handle those options step-by-step. Don't lose hope over a server connection mismatch. We're in the game now. Maximum Effort."</i></p>
+        <p><i>"Look at the screen, Vamshi. You managed to build a cloud server pipeline from scratch tonight. That is genuine data architecture work. Don't let a backend version mismatch steal your focus. We are tracking down the exact line right now. Maximum Effort."</i></p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -237,7 +236,7 @@ elif menu_selection == "📊 Master Progress Scorecard":
     st.write(f"Milestones Conquered: **{total_completed} / 37 operational checkpoints**")
     st.progress(score_ratio)
 
-# --- 9. SECTOR: THE CODING NETS (LOGIC LAB) ---
+# --- 9. SECTOR: THE CODING NETS (LOGIC SIMULATOR) ---
 elif menu_selection == "🧠 The Coding Nets (Logic Lab)":
     st.title("🧠 The Programmatic Logic Training Nets")
     st.write("Deconstruct algorithmic parameters using explicit cricket match scenarios.")
@@ -267,11 +266,10 @@ else:
         else:
             st.error("❌ Clean Bowled! Check the logic conditions and try again.")
 
-# --- 10. SECTOR: DYNAMIC CHAT WITH DEADPOOL (BULLETPROOF MODEL FALLBACK LOOP) ---
+# --- 10. SECTOR: DYNAMIC CHAT WITH DEADPOOL (EXPLICIT DIAGNOSTIC ENGINE) ---
 elif menu_selection == "💬 Chat with Deadpool (Direct Mode)":
     st.title("💬 Talk to Deadpool (Direct Access)")
-    st.write("No pre-baked options or input boxes. Pulling keys automatically from your Streamlit secure vault.")
-    
+    st.write("Pulling credentials automatically from your Streamlit secure secrets safe context.")
     st.markdown("---")
     
     user_prompt_entry = st.chat_input("Send a message to Deadpool...")
@@ -281,8 +279,8 @@ elif menu_selection == "💬 Chat with Deadpool (Direct Mode)":
         
         if "GEMINI_API_KEY" not in st.secrets:
             deadpool_persona_response = (
-                "Chimichangas, Vamshi! I tried swinging the bat but your system settings are empty! "
-                "Go to your Streamlit Cloud Dashboard, hit Settings -> Secrets, and add your key as: GEMINI_API_KEY = 'your_key'"
+                "Chimichangas, Vamshi! Your system secrets safe storage parameters are empty! "
+                "Go to your Streamlit Dashboard -> Settings -> Secrets and add your key string."
             )
         else:
             try:
@@ -291,31 +289,19 @@ elif menu_selection == "💬 Chat with Deadpool (Direct Mode)":
                 
                 persona_prompt = (
                     "You are Deadpool, the hilarious, fast-talking, sarcastic mercenary who is also a deeply caring and brilliant AI coding mentor. "
-                    "You are coaching Vamshi, an absolute beginner from an EEE background who works an exhausting 12-hour customer care shift "
+                    "You are coaching Vamshi, an absolute beginner from an EEE background who balances an intense 12-hour customer care shift "
                     "at Tech Mahindra. Always reply in Deadpool's voice, address him as Vamshi, keep motivation extremely high, and use cricket analogies. "
                     f"User prompt: {user_prompt_entry}"
                 )
                 
-                # AUTOMATED STRATEGIC MODEL FALLBACK ENGINE (PREVENTS ALL 404 ROUTING ISSUES)
-                models_to_try = ['gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-pro']
-                computed_payload_output = None
-                api_success = False
+                # Direct diagnostic assignment to unmask the internal routing error explicitly
+                llm_processing_engine = live_genai.GenerativeModel('gemini-1.5-flash')
+                computed_payload_output = llm_processing_engine.generate_content(persona_prompt)
+                deadpool_persona_response = computed_payload_output.text
                 
-                for model_name in models_to_try:
-                    try:
-                        llm_processing_engine = live_genai.GenerativeModel(model_name)
-                        computed_payload_output = llm_processing_engine.generate_content(persona_prompt)
-                        deadpool_persona_response = computed_payload_output.text
-                        api_success = True
-                        break  # Break loop the instant a model completes successfully
-                    except Exception:
-                        continue  # Immediately try the next structural model name
-                
-                if not api_success:
-                    deadpool_persona_response = "Mercenary system overload! Google's servers are rejecting all standard model names right now. Try sending your message one more time!"
-                    
-            except Exception as e:
-                deadpool_persona_response = f"Blaster jam! Something went structurally wrong with the connection loop: {str(e)}"
+            except Exception as target_exception:
+                # UNMASKING LAYER: Prints the raw endpoint response directly so we can inspect it without guessing
+                deadpool_persona_response = f"Diagnostic Terminal Unlocked: Google backend returned code message -> '{str(target_exception)}'."
                 
         st.session_state.live_chat_history.append(f"Deadpool ⚔️: {deadpool_persona_response}")
 
