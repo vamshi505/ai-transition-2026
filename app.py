@@ -171,7 +171,7 @@ elif menu_selection == "📅 Complete 7-Month Roadmap":
     """, unsafe_allow_html=True)
 
 # --- 8. SECTOR: THE COMPLETE INTERACTIVE SYLLABUS TRACKER ---
-elif menu_selection == "📊 Complete 7-Month Scorecard":
+elif menu_selection == "📊 Master Progress Scorecard":
     st.title("📊 Complete 7-Month Interactive Progress Scorecard")
     st.write("Every single technical topic from June 1st to December 31st typed out. Check them off as you conquer them.")
 
@@ -188,22 +188,22 @@ elif menu_selection == "📊 Complete 7-Month Scorecard":
     j9 = st.checkbox("Data Layouts Part 2: Dictionaries (Key-Value map data layouts)")
     j10 = st.checkbox("Functional Programming: Defining reusable functions, processing arguments, and return scope")
     st.markdown("<div class='video-box'>📺 <b>June Masterclass Video Links:</b><br>"
-                "• <a href='https://www.youtube.com/results?search_query=freecodecamp+python+full+course' target='_blank'>FreeCodeCamp: Python Foundational Programming Masterclass</a><br>"
-                "• <a href='https://www.youtube.com/results?search_query=corey+schafer+python+beginner' target='_blank'>Corey Schafer: Production-Grade Python Playlist</a></div>", unsafe_allow_html=True)
+                "• <a href='[https://www.youtube.com/results?search_query=freecodecamp+python+full+course](https://www.youtube.com/results?search_query=freecodecamp+python+full+course)' target='_blank'>FreeCodeCamp: Python Foundational Programming Masterclass</a><br>"
+                "• <a href='[https://www.youtube.com/results?search_query=corey+schafer+python+beginner](https://www.youtube.com/results?search_query=corey+schafer+python+beginner)' target='_blank'>Corey Schafer: Production-Grade Python Playlist</a></div>", unsafe_allow_html=True)
     st.markdown("---")
 
     # --- JULY CHECKBOXES ---
     st.markdown("### 📅 JULY: Relational Databases & Data Manipulation")
     jy1 = st.checkbox("Relational Architecture: Database patterns, schemas, and relational tables")
-    jy2 = str_layout.checkbox("Query Selection: Writing extractions with SELECT, WHERE, LIKE, and IN constraints")
+    jy2 = st.checkbox("Query Selection: Writing extractions with SELECT, WHERE, LIKE, and IN constraints")
     jy3 = st.checkbox("Relational Joins: Merging table blocks via INNER JOIN and LEFT JOIN structures")
     jy4 = st.checkbox("Advanced Relational Joins: Processing RIGHT JOIN and FULL OUTER JOIN matrices")
     jy5 = st.checkbox("Data Groupings: Harnessing GROUP BY, HAVING, and aggregations (SUM, COUNT, AVG)")
     jy6 = st.checkbox("Pandas Engineering: Loading dataset tables into speed-optimized Series and DataFrames")
     jy7 = st.checkbox("Data Cleansing Arrays: Treating missing data rows, null variables, and formatting bugs")
     st.markdown("<div class='video-box'>📺 <b>July Masterclass Video Links:</b><br>"
-                "• <a href='https://www.youtube.com/results?search_query=freecodecamp+sql+tutorial' target='_blank'>FreeCodeCamp: Complete Structured Query Language Guide</a><br>"
-                "• <a href='https://www.youtube.com/results?search_query=keith+galli+pandas' target='_blank'>Keith Galli: Complete Pandas Data Wrangling Tutorial</a></div>", unsafe_allow_html=True)
+                "• <a href='[https://www.youtube.com/results?search_query=freecodecamp+sql+tutorial](https://www.youtube.com/results?search_query=freecodecamp+sql+tutorial)' target='_blank'>FreeCodeCamp: Complete Structured Query Language Guide</a><br>"
+                "• <a href='[https://www.youtube.com/results?search_query=keith+galli+pandas](https://www.youtube.com/results?search_query=keith+galli+pandas)' target='_blank'>Keith Galli: Complete Pandas Data Wrangling Tutorial</a></div>", unsafe_allow_html=True)
     st.markdown("---")
 
     # --- AUGUST CHECKBOXES ---
@@ -216,8 +216,8 @@ elif menu_selection == "📊 Complete 7-Month Scorecard":
     a6 = st.checkbox("Evaluation Frameworks: Precision, Recall, and calculating unified F1-Scores")
     a7 = st.checkbox("The Performance Matrix: Structuring Confusion Matrices to map prediction anomalies")
     st.markdown("<div class='video-box'>📺 <b>August Masterclass Video Links:</b><br>"
-                "• <a href='https://www.youtube.com/results?search_query=statquest+machine+learning' target='_blank'>StatQuest: Machine Learning Fundamentals Explained Visually</a><br>"
-                "• <a href='https://www.youtube.com/results?search_query=programming+with+mosh+machine+learning' target='_blank'>Programming with Mosh: Python Machine Learning Basics</a></div>", unsafe_allow_html=True)
+                "• <a href='[https://www.youtube.com/results?search_query=statquest+machine+learning](https://www.youtube.com/results?search_query=statquest+machine+learning)' target='_blank'>StatQuest: Machine Learning Fundamentals Explained Visually</a><br>"
+                "• <a href='[https://www.youtube.com/results?search_query=programming+with+mosh+machine+learning](https://www.youtube.com/results?search_query=programming+with+mosh+machine+learning)' target='_blank'>Programming with Mosh: Python Machine Learning Basics</a></div>", unsafe_allow_html=True)
     st.markdown("---")
 
     # --- SEPTEMBER CHECKBOXES ---
@@ -230,8 +230,8 @@ elif menu_selection == "📊 Complete 7-Month Scorecard":
     s6 = st.checkbox("Capstone Development: Building text classification code to process and catch customer sentiments")
     s7 = st.checkbox("Capstone Hosting: Packing, debugging, and deploying your complete final system onto Streamlit Cloud")
     st.markdown("<div class='video-box'>📺 <b>September Masterclass Video Links:</b><br>"
-                "• <a href='https://www.youtube.com/results?search_query=andrej+karpathy+intro+to+llms' target='_blank'>Andrej Karpathy: Intro to Modern Large Language Models</a><br>"
-                "• <a href='https://www.youtube.com/results?search_query=freecodecamp+langchain' target='_blank'>FreeCodeCamp: Generative AI Application Development Masterclass</a></div>", unsafe_allow_html=True)
+                "• <a href='[https://www.youtube.com/results?search_query=andrej+karpathy+intro+to+llms](https://www.youtube.com/results?search_query=andrej+karpathy+intro+to+llms)' target='_blank'>Andrej Karpathy: Intro to Modern Large Language Models</a><br>"
+                "• <a href='[https://www.youtube.com/results?search_query=freecodecamp+langchain](https://www.youtube.com/results?search_query=freecodecamp+langchain)' target='_blank'>FreeCodeCamp: Generative AI Application Development Masterclass</a></div>", unsafe_allow_html=True)
     st.markdown("---")
 
     # --- OCTOBER TO DECEMBER CHECKBOXES ---
@@ -243,8 +243,8 @@ elif menu_selection == "📊 Complete 7-Month Scorecard":
     o5 = st.checkbox("Portfolio Presentation: Deploying cleanly documented coding repositories directly onto your GitHub profile")
     o6 = st.checkbox("Live Interview Strategy: Talking through your logic cleanly during whiteboard coding panels")
     st.markdown("<div class='video-box'>📺 <b>October Masterclass Video Links:</b><br>"
-                "• <a href='https://www.youtube.com/results?search_query=freecodecamp+data+structures+and+algorithms' target='_blank'>FreeCodeCamp: Data Structures and Algorithms Full Course</a><br>"
-                "• <a href='https://www.youtube.com/results?search_query=ml+engineer+interview+questions' target='_blank'>Tech Interview Pro: Cracking the Technical AI Engineer Screener</a></div>", unsafe_allow_html=True)
+                "• <a href='[https://www.youtube.com/results?search_query=freecodecamp+data+structures+and+algorithms](https://www.youtube.com/results?search_query=freecodecamp+data+structures+and+algorithms)' target='_blank'>FreeCodeCamp: Data Structures and Algorithms Full Course</a><br>"
+                "• <a href='[https://www.youtube.com/results?search_query=ml+engineer+interview+questions](https://www.youtube.com/results?search_query=ml+engineer+interview+questions)' target='_blank'>Tech Interview Pro: Cracking the Technical AI Engineer Screener</a></div>", unsafe_allow_html=True)
 
     # MASTER CALCULATION
     st.markdown("---")
@@ -255,7 +255,7 @@ elif menu_selection == "📊 Complete 7-Month Scorecard":
     st.progress(score_ratio)
 
 # --- 9. SECTOR: THE CODING NETS (LOGIC SIMULATOR) ---
-elif menu_selection == "🧠 The Coding Nets (Simulator)":
+elif menu_selection == "🧠 The Coding Nets (Logic Lab)":
     st.title("🧠 The Interactive Logic Training Ground")
     st.write("Learn how code parameters work using pure cricket rules. No boring math textbooks.")
     
@@ -311,13 +311,13 @@ elif menu_selection == "💬 Chat with Deadpool (API Mode)":
                 # SAFE LOCAL IMPORT ENGINE
                 import google.generativeai as live_genai
                 live_genai.configure(api_key=secure_api_key)
-                llm_engine = live_genai.GenerativeModel('gemini-pro')
+                llm_engine = live_genai.GenerativeModel('gemini-1.5-flash')
                 
                 payload_instructions = (
-                    "You are Deadpool, the funny, sarcastic, mouthy mercenary who is also a deeply caring and brilliant AI coding mentor. "
-                    "You are helping your student Vamshi, a 23-year-old absolute beginner with an EEE background who works an exhausting 12-hour customer care shift "
-                    "at Tech Mahindra. Always talk in Deadpool's voice, use hilarious cricket analogies, keep his confidence sky-high, and answer his questions completely. "
-                    f"User question: {user_chat_input}"
+                    "You are Deadpool, the hilarious, fast-talking, sarcastic mercenary who is also a deeply caring and brilliant AI coding mentor. "
+                    "You are coaching Vamshi, an absolute beginner from an EEE background who works an exhausting 12-hour customer care shift "
+                    "at Tech Mahindra. Always reply in Deadpool's voice, address him as Vamshi, keep motivation extremely high, and use cricket analogies whenever explaining complex ideas. "
+                    f"User prompt: {user_chat_input}"
                 )
                 model_output = llm_engine.generate_content(payload_instructions)
                 ai_reply = model_output.text
