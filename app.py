@@ -3,231 +3,246 @@ import datetime
 import pandas as pd
 import time
 
-# --- 1. THE "ULTIMATE" UI CONFIGURATION ---
+# --- 1. STADIUM CONFIGURATION ---
 st.set_page_config(
-    page_title="Vamshi's AI Transition Hub",
+    page_title="VAMSHI'S AI STADIUM 2026",
     page_icon="🏏",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    layout="wide"
 )
 
-# --- 2. CUSTOM CSS: CYBER-CRICKET DARK THEME ---
+# --- 2. THE "NIGHT MATCH" INTERACTIVE UI ---
 st.markdown("""
     <style>
-    /* Dark Theme Background */
+    /* Stadium Background */
     .stApp {
-        background-color: #0b0e14;
-        color: #e0e6ed;
+        background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+        color: #f8fafc;
     }
     
-    /* Sidebar Styling */
+    /* Sidebar: The Dugout */
     section[data-testid="stSidebar"] {
-        background-color: #161b22 !important;
-        border-right: 1px solid #30363d;
+        background-color: #1e293b !important;
+        border-right: 2px solid #10b981;
     }
     
-    /* Neon Green & Gold Accent Cards */
-    .metric-card {
-        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-        padding: 20px;
-        border-radius: 15px;
-        border: 1px solid #34d399; /* Cricket Green */
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-        margin-bottom: 20px;
+    /* Neon Stadium Cards */
+    .stadium-card {
+        background: rgba(30, 41, 59, 0.7);
+        padding: 25px;
+        border-radius: 20px;
+        border: 2px solid #10b981; /* Pitch Green */
+        box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+        margin-bottom: 25px;
     }
     
-    .status-gold {
-        color: #fbbf24; /* Gold */
-        font-weight: bold;
-    }
-    
-    /* Interactive Button Styling */
+    /* Interactive Buttons: The Power-Hitters */
     .stButton>button {
-        background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+        background: linear-gradient(90deg, #10b981 0%, #3b82f6 100%);
         color: white;
         border: none;
-        border-radius: 10px;
-        padding: 10px 20px;
-        font-weight: bold;
-        transition: 0.3s all ease;
+        border-radius: 50px;
+        padding: 15px 30px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: 0.4s;
     }
     
     .stButton>button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        transform: scale(1.05);
+        box-shadow: 0 0 25px rgba(59, 130, 246, 0.6);
     }
 
-    /* Roadmap Steps */
-    .step-box {
-        border-left: 4px solid #10b981;
-        padding-left: 20px;
-        margin-bottom: 20px;
-        background: #1c2128;
-        padding: 15px;
-        border-radius: 0 10px 10px 0;
+    /* Progress Bars */
+    .stProgress > div > div > div > div {
+        background-image: linear-gradient(to right, #10b981, #f59e0b);
+    }
+    
+    h1, h2, h3 {
+        font-family: 'Black Ops One', cursive, sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #f1f5f9;
+    }
+    
+    .magic-text {
+        color: #fbbf24; /* Gold */
+        font-weight: bold;
+        text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- 3. SESSION STATE FOR INTERACTIVITY ---
-if 'flash_idx' not in st.session_state: st.session_state.flash_idx = 0
-if 'energy_level' not in st.session_state: st.session_state.energy_level = "Steady"
-
-# --- 4. DATA CONTENT ---
+# --- 3. CORE LOGIC & STATE ---
 today = datetime.date(2026, 6, 1)
-goal_date = datetime.date(2026, 12, 31)
-interview_date = datetime.date(2026, 10, 1)
+interview_day = datetime.date(2026, 10, 1)
+if 'streak' not in st.session_state: st.session_state.streak = 1
+if 'flash_idx' not in st.session_state: st.session_state.flash_idx = 0
 
-flashcards = [
-    {"q": "What is an Algorithm?", "a": "A step-by-step recipe for the computer. Like a cricket strategy for a Super Over."},
-    {"q": "What is a Neural Network?", "a": "An AI structure inspired by the human brain to find complex patterns."},
-    {"q": "What is Generative AI?", "a": "AI that can create new content (text, images, code) instead of just analyzing old data."},
-    {"q": "What is 'Fine-Tuning'?", "a": "Taking a smart AI and training it specifically for one task, like coaching a general batsman to play only spin."}
-]
+# --- 4. NAVIGATION: THE SCOREBOARD ---
+st.sidebar.markdown("<h1 style='text-align: center; color: #10b981;'>🏏 MATCH CENTER</h1>", unsafe_allow_html=True)
+st.sidebar.markdown(f"<p style='text-align: center;'><b>Vamshi 'The All-Rounder'</b><br>Day {st.session_state.streak} of Transition</p>", unsafe_allow_html=True)
 
-# --- 5. NAVIGATION ---
-st.sidebar.markdown("<h1 style='text-align: center; color: #10b981;'>🏏 TITAN HUB</h1>", unsafe_allow_html=True)
-st.sidebar.markdown("---")
-page = st.sidebar.radio("CHOOSE SECTOR:", [
-    "🚀 Command Dashboard",
-    "📅 7-Month Roadmap",
-    "🧠 Logic & Code Gym",
-    "📚 The Knowledge Vault (GenAI)",
-    "🗣️ Communication Mentor",
-    "🎯 Progress Scorecard"
+nav = st.sidebar.radio("CHOOSE YOUR SECTOR:", [
+    "🏟️ THE PAVILION (Dashboard)",
+    "📅 SEASON SCHEDULE (Roadmap)",
+    "🏆 SCORECARD (Progress)",
+    "🧠 THE NETS (Logic Lab)",
+    "💻 THE ACADEMY (Interactive)",
+    "🗣️ MENTAL COACH (English)",
+    "✨ THE MAGIC VAULT (GenAI & Jobs)"
 ])
 
-# --- 6. PAGE: COMMAND DASHBOARD ---
-if page == "🚀 Command Dashboard":
-    st.title("Welcome to the Second Innings")
+# --- 5. THE PAVILION (DASHBOARD) ---
+if nav == "🏟️ THE PAVILION (Dashboard)":
+    st.title("🏟️ Main Stadium Dashboard")
     
-    # Hero Stats
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.markdown(f"<div class='metric-card'><h3>Days to Job Hunt</h3><h2 class='status-gold'>{(interview_date - today).days}</h2></div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='stadium-card'><p>Days to Interviews</p><h2>{(interview_day - today).days}</h2></div>", unsafe_allow_html=True)
     with col2:
-        st.markdown(f"<div class='metric-card'><h3>Season Progress</h3><h2 style='color: #10b981;'>12%</h2></div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='stadium-card'><p>Career Average</p><h2 style='color: #10b981;'>85% Focus</h2></div>", unsafe_allow_html=True)
     with col3:
-        st.markdown(f"<div class='metric-card'><h3>Current Level</h3><h2 style='color: #58a6ff;'>Beginner</h2></div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='stadium-card'><p>Current Rank</p><h2 style='color: #fbbf24;'>Future AI Lead</h2></div>", unsafe_allow_html=True)
 
-    # Energy-Based Recommendation
-    st.subheader("🔋 Energy Check")
-    st.session_state.energy_level = st.select_slider("How is your battery after the 12hr shift?", options=["Dead", "Low", "Steady", "Fully Charged"])
-    
-    if st.session_state.energy_level == "Dead":
-        st.error("⚠️ CRITICAL: Brain overload. Do not code. Go to 'Knowledge Vault' and read 2 flashcards, then sleep.")
-    elif st.session_state.energy_level == "Fully Charged":
-        st.success("🔥 POWERPLAY: You have high focus. Go to 'Logic & Code Gym' and solve the Hard Challenge.")
-    else:
-        st.info("⚡ STEADY: Good for Roadmap review and 10 mins of English practice.")
-
-    # Concentration Timer
     st.markdown("---")
-    st.subheader("⏲️ T20 Concentration Timer")
-    if st.button("Start 20-Minute Study Over"):
-        st.balloons()
-        st.write("Timer Active! Put your phone away. No distractions until the over is finished.")
-
-# --- 7. PAGE: ROADMAP ---
-elif page == "📅 7-Month Roadmap":
-    st.title("📅 The 2026 Championship Path")
     
-    months = {
-        "June": "Python Logic & Syntax (Mastering the Batting Stance)",
-        "July": "SQL & Data Analytics (Reading the Pitch)",
-        "August": "Machine Learning Foundations (The Powerplay)",
-        "September": "GenAI & Capstone Project (The Death Overs)",
-        "October": "Interview Prep & Job Hunt (The Grand Finale)",
-        "Nov-Dec": "Landing the Offer & Onboarding (Winning the Trophy)"
+    # Energy Strategy (Survivor Mode)
+    st.subheader("🔋 Battery Check: How's the Energy after the 12H Shift?")
+    energy = st.select_slider("", options=["0% (Exhausted)", "25% (Tired)", "50% (Steady)", "100% (Match Ready)"])
+    
+    if "0%" in energy:
+        st.error("🚨 OVERLOAD DETECTED. Don't touch the code. Listen to one 'Mental Coach' audio and sleep.")
+    elif "100%" in energy:
+        st.success("🔥 POWERPLAY MODE! Go to 'The Nets' and build a complex Python loop right now.")
+    else:
+        st.info("⚡ ROTATE STRIKE. Spend 15 minutes on Flashcards and 5 minutes on English.")
+
+    st.markdown("""
+    <div class='stadium-card'>
+        <h3 class='magic-text'>🔥 Mentor Buddy Message</h3>
+        <p>"Vamshi, a pace all-rounder doesn't win the game by just bowling fast. He wins by staying at the crease when everyone else is tired. You've worked 12 hours? Great. That's your endurance. Now, let's play the straight drive into the world of AI."</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# --- 6. SEASON SCHEDULE (ROADMAP) ---
+elif nav == "📅 SEASON SCHEDULE (Roadmap)":
+    st.title("📅 The 2026 Championship Journey")
+    st.write("Every month is a different phase of the match.")
+    
+    roadmap = {
+        "JUNE": "🏏 *THE NETS:* Python logic, strike rate calculators, data types.",
+        "JULY": "📊 *THE MIDDLE OVERS:* SQL, Pandas, handling massive datasets.",
+        "AUGUST": "🎯 *THE POWERPLAY:* Machine Learning algorithms (Predictions).",
+        "SEPTEMBER": "✨ *THE MAGIC:* Generative AI, LLMs, and your Capstone Project.",
+        "OCTOBER": "🏆 *THE FINALS:* Interviews start. Resume is ready. Applications live.",
+        "NOV-DEC": "🏅 *VICTORY:* Landing the AI Engineer role."
     }
     
-    for month, task in months.items():
-        st.markdown(f"<div class='step-box'><h3>{month}</h3><p>{task}</p></div>", unsafe_allow_html=True)
+    for month, task in roadmap.items():
+        with st.expander(f"📌 {month}"):
+            st.write(task)
+            st.button(f"Mark {month} as Completed", key=month)
 
-# --- 8. PAGE: LOGIC & CODE GYM ---
-elif page == "🧠 Logic & Code Gym":
-    st.title("🧠 The Logic Playground")
-    st.write("Convert your cricket knowledge into Python logic.")
+# --- 7. SCORECARD (PROGRESS) ---
+elif nav == "🏆 SCORECARD (Progress)":
+    st.title("🏆 Career Scorecard")
+    st.write("Track your 'Magical' topics and code logic mastery.")
     
-    st.subheader("Problem Solving Technique: 'The DRS Method'")
-    st.markdown("""
-    1. **Define** (The Input): What data do I have? (e.g., Runs per ball)
-    2. **Review** (The Logic): What is the condition? (e.g., If run == 0, it's a dot ball)
-    3. **Solve** (The Code): Write it ball-by-ball.
-    """)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.subheader("Python & Logic")
+        p1 = st.checkbox("Variables & Math Logic")
+        p2 = st.checkbox("If/Else Decision Making")
+        p3 = st.checkbox("Loops (Over Analysis)")
+    with col2:
+        st.subheader("AI & Machine Learning")
+        a1 = st.checkbox("What is Data Science?")
+        a2 = st.checkbox("Linear Regression (Predictions)")
+        a3 = st.checkbox("Generative AI Basics")
     
-    st.subheader("Challenge: The Strike Rate Logic")
-    st.code("""
-runs = 45
-balls = 20
+    total = sum([p1, p2, p3, a1, a2, a3])
+    st.markdown(f"### Total Completion: {int((total/6)*100)}%")
+    st.progress(total/6)
 
-# Calculate Strike Rate
-strike_rate = (runs / balls) * 100
+# --- 8. THE NETS (LOGIC LAB) ---
+elif nav == "🧠 THE NETS (Logic Lab)":
+    st.title("🧠 The Logic Nets")
+    st.write("Learn coding through the rules of cricket.")
+    
+    tab1, tab2 = st.tabs(["English-to-Code Bridge", "Cricket Code Scenarios"])
+    
+    with tab1:
+        st.subheader("🌉 The Bridge")
+        st.write("If I say: 'If the batsman scores a 6, he gets a bonus.'")
+        st.write("Python says:")
+        st.code("""
+if runs == 6:
+    score = score + 12  # Double the reward!
+        """, language="python")
+        
+    with tab2:
+        st.subheader("🏏 Scenario: All-Rounder Selection")
+        st.write("Logic: Select the player if Strike Rate > 140 AND Wickets > 1.")
+        st.code("""
+sr = 150
+wickets = 2
 
-if strike_rate > 200:
-    print("Explosive Finish!")
-elif strike_rate > 150:
-    print("Aggressive Batting")
+if sr > 140 and wickets > 1:
+    print("SELECTED FOR NATIONAL TEAM")
 else:
-    print("Rotating Strike")
-    """, language="python")
-    
-    st.markdown("### 🕹️ Interactive Learning Sites")
-    st.write("Click these to get your dopamine fix through gamified coding:")
-    st.markdown("- [Coddy.tech](https://coddy.tech) (Interactive Python)")
-    st.markdown("- [CheckiO](https://py.checkio.org/) (Coding Game)")
+    print("SEND BACK TO DOMESTIC")
+        """, language="python")
 
-# --- 9. PAGE: KNOWLEDGE VAULT ---
-elif page == "📚 The Knowledge Vault (GenAI)":
-    st.title("📚 AI Knowledge & Flashcards")
+# --- 9. THE ACADEMY (INTERACTIVE) ---
+elif nav == "💻 THE ACADEMY (Interactive)":
+    st.title("💻 Interactive Learning Hub")
+    st.write("High-dopamine websites to keep you addicted to learning.")
     
-    st.subheader("⚡ Commuter Flashcards")
-    card = flashcards[st.session_state.flash_idx]
-    st.markdown(f"<div style='background: #1f2937; padding: 40px; border-radius: 15px; border: 2px solid #58a6ff; text-align: center;'><h2>{card['q']}</h2></div>", unsafe_allow_html=True)
-    
-    if st.button("Reveal Magic"):
-        st.success(card['a'])
-    
-    if st.button("Next Ball (Next Card)"):
-        st.session_state.flash_idx = (st.session_state.flash_idx + 1) % len(flashcards)
-        st.rerun()
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("""
+        <div class='stadium-card'>
+            <h4>🎮 Gamified Coding</h4>
+            <p><a href='https://coddy.tech' target='_blank'>Coddy.tech</a> - Duolingo for Code.</p>
+            <p><a href='https://py.checkio.org/' target='_blank'>CheckiO</a> - Save a world with Python.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    with col2:
+        st.markdown("""
+        <div class='stadium-card'>
+            <h4>🧩 Daily Logic</h4>
+            <p><a href='https://www.codewars.com/' target='_blank'>Codewars</a> - Level up like a Pro.</p>
+        </div>
+        """, unsafe_allow_html=True)
 
-    st.markdown("---")
-    st.subheader("🤖 The 'Magical' AI Topics")
-    st.write("**Generative AI:** The ability for machines to generate content. It uses something called **Transformers** (Attention mechanism) to focus on important words in a sentence.")
-
-# --- 10. PAGE: COMMUNICATION MENTOR ---
-elif nav == "🗣️ Communication Mentor":
-    st.title("🗣️ The English Coaching Sector")
-    st.write("Current Rating: **5/10** ➔ Target: **8/10**")
+# --- 10. MENTAL COACH (ENGLISH) ---
+elif nav == "🗣️ MENTAL COACH (English)":
+    st.title("🗣️ English & Communication")
+    st.write("Goal: Move from *5/10* to *8/10*.")
     
     st.markdown("""
-    <div class='metric-card'>
-    <h3>🎤 The 2-Minute Interview Drill</h3>
-    <p>1. Record yourself explaining 'What is a Loop?'</p>
-    <p>2. Don't use 'um' or 'uh'.</p>
-    <p>3. Use Grammarly to check your written logic emails.</p>
+    <div class='stadium-card'>
+        <h3>🎤 2-Minute Voice Drill</h3>
+        <p>Topic: <b>'Why I want to be an AI Engineer'</b></p>
+        <p>1. Open your phone recorder.<br>2. Speak for 2 mins in English.<br>3. Listen and find one mistake.</p>
     </div>
     """, unsafe_allow_html=True)
     
-    st.subheader("Technical English Tip")
-    st.info("Instead of saying 'I want to do this', say 'My objective is to implement this logic.'")
+    st.info("💡 *Mentor Tip:* Use the 'Grammarly' app on your phone while writing emails or chat tickets at Tech Mahindra. It fixes your mistakes while you work.")
 
-# --- 11. PAGE: PROGRESS SCORECARD ---
-elif nav == "🎯 Progress Scorecard":
-    st.title("🏆 Career Progress Tracking")
-    st.write("Check these off as you complete them. No skipping!")
+# --- 11. THE MAGIC VAULT (GENAI & JOBS) ---
+elif nav == "✨ THE MAGIC VAULT (GenAI & Jobs)":
+    st.title("✨ The Magic Vault")
     
-    with st.expander("✅ JUNE: Python Foundations"):
-        st.checkbox("Variables & Data Types")
-        st.checkbox("Conditionals (If/Else)")
-        st.checkbox("For & While Loops")
-        st.checkbox("Lists & Dictionaries")
+    st.subheader("🧙 'Magical' AI Concepts")
+    with st.expander("What is Generative AI? (Simple terms)"):
+        st.write("Think of it as a batsman who has seen every single cricket match ever played. Now, you ask him to play a shot that has never been played before. Because he knows the 'patterns' of the game, he can 'generate' a new shot.")
     
-    with st.expander("✅ JULY: Data & SQL"):
-        st.checkbox("SQL Select & Filters")
-        st.checkbox("Pandas Basics")
-        
-    st.subheader("Your Career Growth")
-    st.progress(12)
-    st.write("Level 1: The Rookie All-Rounder")
+    with st.expander("What are LLMs (Large Language Models)?"):
+        st.write("Massive brains that predict the next word just like a bowler predicts the next weakness in a batsman.")
+
+    st.markdown("---")
+    st.subheader("💼 Job Market Radar (Oct 1st Active)")
+    st.warning("Note: Starting October 1st, this section will host your Resume Builder and Job Application Tracker.")
+    st.write("Target Roles: Junior AI/ML Engineer, Data Analyst, Technical Solutions Associate.")
