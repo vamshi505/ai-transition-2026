@@ -2,56 +2,56 @@ import streamlit as st
 import datetime
 import pandas as pd
 import time
+import os
 
-# --- 1. ARENA ARCHITECTURE CONFIGURATION ---
+# --- 1. STADIUM ARCHITECTURE & CONFIG ---
 st.set_page_config(
-    page_title="Vamshi's Deadpool AI Stadium 2026",
+    page_title="VAMSHI'S AI STADIUM 2026",
     page_icon="⚔️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# --- 2. HIGH-DOPAMINE CRIMSON & STADIUM DARK CSS ---
+# --- 2. THE "MAXIMUM EFFORT" CUSTOM UI (NEON CRIMSON & CHARCOAL) ---
 st.markdown("""
     <style>
-    /* Global Canvas Dark Mode */
+    /* Full Stadium Dark Mode */
     .stApp {
-        background: radial-gradient(circle at center, #1f0606 0%, #000000 100%);
-        color: #f1f5f9;
+        background: radial-gradient(circle at center, #1a0505 0%, #000000 100%);
+        color: #f8fafc;
     }
     
-    /* Neon Crimson Sidebar Dugout */
+    /* Neon Red Sidebar */
     section[data-testid="stSidebar"] {
         background-color: #0d0101 !important;
         border-right: 3px solid #e23636;
     }
     
-    /* Interactive Metric Cards */
+    /* Interactive Stadium Cards */
     .stadium-card {
-        background: linear-gradient(135deg, #2a0808 0%, #080101 100%);
-        padding: 24px;
-        border-radius: 16px;
+        background: linear-gradient(135deg, #2d0a0a 0%, #0d0202 100%);
+        padding: 25px;
+        border-radius: 15px;
         border: 2px solid #e23636;
-        box-shadow: 0 0 20px rgba(226, 54, 54, 0.35);
-        margin-bottom: 24px;
+        box-shadow: 0 0 30px rgba(226, 54, 54, 0.4);
+        margin-bottom: 25px;
     }
-    
-    /* Embedded Resource Links Block */
+
     .video-box {
         background-color: #0b0f19;
-        padding: 16px;
+        padding: 15px;
         border-radius: 12px;
         border: 1px solid #3b82f6;
-        margin-top: 12px;
+        margin-top: 10px;
     }
-    
-    /* Power Button Global Styles */
+
+    /* Professional Buttons */
     .stButton>button {
         background: linear-gradient(90deg, #e23636 0%, #7f1d1d 100%);
         color: #ffffff !important;
         border: 1px solid #ffffff !important;
         border-radius: 40px !important;
-        padding: 14px 28px !important;
+        padding: 15px 30px !important;
         font-weight: 900 !important;
         text-transform: uppercase !important;
         letter-spacing: 1.5px !important;
@@ -61,170 +61,255 @@ st.markdown("""
     
     .stButton>button:hover {
         transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 0 30px rgba(226, 54, 54, 0.75);
+        box-shadow: 0 0 40px rgba(226, 54, 54, 0.8);
     }
     
-    /* Typography Overrides */
     h1, h2, h3, h4 {
         color: #e23636;
         font-family: 'Impact', 'Arial Black', sans-serif;
-        letter-spacing: 1.5px;
         text-transform: uppercase;
+        letter-spacing: 2px;
     }
     
-    .glow-gold {
+    .gold {
         color: #fbbf24;
-        text-shadow: 0 0 12px rgba(251, 191, 36, 0.7);
+        text-shadow: 0 0 15px rgba(251, 191, 36, 0.8);
         font-weight: bold;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- 3. COGNITIVE APPLICATION MEMORY ARRAYS ---
-if 'streak_counter' not in st.session_state: 
-    st.session_state.streak_counter = 1
-if 'stadium_runs' not in st.session_state: 
-    st.session_state.stadium_runs = 0
-if 'live_chat_history' not in st.session_state: 
-    st.session_state.live_chat_history = []
+# --- 3. PERSISTENT SYSTEM MEMORY ---
+if 'streak' not in st.session_state: st.session_state.streak = 1
+if 'runs' not in st.session_state: st.session_state.runs = 0
+if 'chat_log' not in st.session_state: st.session_state.chat_log = []
 
-# --- 4. TOURNAMENT SCHEDULE ANCHORS (2026) ---
-current_match_day = datetime.date(2026, 6, 1)
-interview_match_day = datetime.date(2026, 10, 1)
-world_cup_deadline = datetime.date(2026, 12, 31)
+# --- 4. CALENDAR ANCHORS ---
+today = datetime.date(2026, 6, 1)
+interview_season = datetime.date(2026, 10, 1)
+goal_deadline = datetime.date(2026, 12, 31)
 
-# --- 5. SIDEBAR COMMAND PANEL CONTROL ---
+# --- 5. SIDEBAR: THE DUGOUT ---
 st.sidebar.markdown("<h1 style='text-align: center; color: #e23636;'>⚔️ DEADPOOL</h1>", unsafe_allow_html=True)
-st.sidebar.markdown("<p style='text-align: center; color: #9ca3af;'><b>BATSMAN: VAMSHI THE ALL-ROUNDER</b></p>", unsafe_allow_html=True)
+st.sidebar.markdown("<p style='text-align: center;'><b>BATSMAN: VAMSHI ALL-ROUNDER</b></p>", unsafe_allow_html=True)
 st.sidebar.markdown("---")
 
-st.sidebar.markdown(f"🔥 **Win Streak:** `{st.session_state.streak_counter} Matches`")
-if st.sidebar.button("🏏 LOG DAILY TRAINING"):
-    st.session_state.streak_counter += 1
-    st.sidebar.success("Session logged!")
+st.sidebar.markdown(f"🔥 **Win Streak:** `{st.session_state.streak} Matches`")
+if st.sidebar.button("🏏 LOG PRACTICE INNINGS"):
+    st.session_state.streak += 1
+    st.sidebar.success("Innings saved to the board!")
 
-menu_selection = st.sidebar.radio("NAVIGATE ARENA SECTORS:", [
+nav_choice = st.sidebar.radio("CHOOSE SECTOR:", [
     "🏟️ The Pavilion (Dashboard)",
-    "📅 Complete 7-Month Roadmap",
-    "📊 Master Progress Scorecard",
+    "📅 7-Month Roadmap",
+    "📊 Master Scorecard (37 Points)",
     "🧠 The Coding Nets (Logic Lab)",
-    "💬 Chat with Deadpool (Direct Mode)",
+    "💬 Chat with Deadpool (AI Mode)",
     "🗣️ Professional English Tuner"
 ])
 
-# --- 6. SECTOR: THE PAVILION ---
-if menu_selection == "🏟️ The Pavilion (Dashboard)":
+# --- 6. SECTOR: THE PAVILION (DASHBOARD) ---
+if nav_choice == "🏟️ The Pavilion (Dashboard)":
     st.title("🏟️ Main Command Pavilion")
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.markdown(f"<div class='stadium-card'><h5>Days to Oct 1st Finals</h5><h2 class='glow-gold'>{(interview_match_day - current_match_day).days}</h2></div>", unsafe_allow_html=True)
-    with col2:
-        st.markdown("<div class='stadium-card'><h5>Current Rank</h5><h2 style='color: #3b82f6;'>All-Rounder ⚡</h2></div>", unsafe_allow_html=True)
-    with col3:
-        st.markdown(f"<div class='stadium-card'><h5>Your Score</h5><h2 style='color: #10b981;'>{st.session_state.stadium_runs} Runs</h2></div>", unsafe_allow_html=True)
+    st.write("Wankhede Stadium, June 1st. Time to make a legendary comeback.")
+    
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.markdown(f"<div class='stadium-card'><h5>Days to Finals (Oct 1)</h5><h2 class='gold'>{(interview_season - today).days}</h2></div>", unsafe_allow_html=True)
+    with c2:
+        st.markdown("<div class='stadium-card'><h5>Current Rank</h5><h2 style='color: #3b82f6;'>Rookie All-Rounder</h2></div>", unsafe_allow_html=True)
+    with c3:
+        st.markdown(f"<div class='stadium-card'><h5>Total Runs</h5><h2 style='color: #10b981;'>{st.session_state.runs}</h2></div>", unsafe_allow_html=True)
 
-    energy_input = st.select_slider("Energy Level:", options=["0%", "25%", "50%", "100%"])
+    st.subheader("🔋 Energy Recovery (After 12H Shift)")
+    energy = st.select_slider("How is your human battery right now?", options=["0%", "25%", "50%", "100%"])
+    
+    if "0%" in energy:
+        st.error("🚨 OVERLOAD. Do not code. Talk to Deadpool or do a vocal drill, then sleep.")
+    elif "100%" in energy:
+        st.success("🔥 POWERPLAY! Open 'The Nets' and crush a logic problem.")
+
     st.markdown("""
     <div class='stadium-card'>
-        <h3 style='color: #e23636;'>⚔️ Deadpool's Corner</h3>
-        <p>"Listen, Vamshi. I've built this stadium for you. No more typing keys. Just pure AI logic. 
-        You worked 12 hours? Great, now give me 20 minutes of <b>Maximum Effort</b>."</p>
+        <h3 style='color: #e23636;'>⚔️ Deadpool's Voice</h3>
+        <p>"Vamshi, listen to me. Most people quit after a 4-hour shift. You do 12. That means you have the heart of a champion. 
+        Don't let a missing variable or a 404 error stop you. We are building an AI engineer here, not a taco stand. 
+        <b>Maximum Effort!</b>"</p>
     </div>
     """, unsafe_allow_html=True)
 
-# --- 7. ROADMAP ---
-elif menu_selection == "📅 Complete 7-Month Roadmap":
-    st.title("📅 The 2026 Career Roadmap")
+# --- 7. SECTOR: 7-MONTH ROADMAP ---
+elif nav_choice == "📅 7-Month Roadmap":
+    st.title("📅 The 2026 Season Schedule")
+    
     st.markdown("""
-    <div class='stadium-card'><h3>June: Python Logic Foundations</h3><p>Variables, Loops, and If/Else constructions.</p></div>
-    <div class='stadium-card'><h3>July: SQL & Data Manipulation</h3><p>Joins, Aggregations, and Pandas.</p></div>
-    <div class='stadium-card'><h3>August: Machine Learning Pipelines</h3><p>Regression, Trees, and Model Metrics.</p></div>
-    <div class='stadium-card'><h3>September: GenAI & LLM Projects</h3><p>The 'Magic' phase. APIs and Capstone.</p></div>
-    <div class='stadium-card'><h3>Oct-Dec: World Cup Finals</h3><p>Interview Blitz and Placements.</p></div>
+    <div class='stadium-card'>
+        <h3>🏏 PHASE 1: THE NETS PRACTICE (June - July)</h3>
+        <p><b>Focus:</b> Python Logic, SQL, and Data Handling.</p>
+        <p><i>June:</i> Variables, Loops, If/Else, and Functions.<br><i>July:</i> SQL Queries, Joins, and Pandas DataFrames.</p>
+    </div>
+    <div class='stadium-card'>
+        <h3>🎯 PHASE 2: THE MID-OVER EXPLOSION (August - September)</h3>
+        <p><b>Focus:</b> Machine Learning & Magical AI (GenAI).</p>
+        <p><i>August:</i> Regression, Decision Trees, and Model Metrics.<br><i>September:</i> Transformers, LLMs, Gemini APIs, and Capstone Project.</p>
+    </div>
+    <div class='stadium-card'>
+        <h3>🏆 PHASE 3: THE WORLD CUP FINALS (October - December)</h3>
+        <p><b>Focus:</b> Job Applications & Interviews.</p>
+        <p><i>October 1:</i> Launch applications. Review Data Structures.<br><i>Nov-Dec:</i> Clear technical panels and land the Offer Letter.</p>
+    </div>
     """, unsafe_allow_html=True)
 
-# --- 8. SCORECARD ---
-elif menu_selection == "📊 Master Progress Scorecard":
-    st.title("📊 Complete Syllabus Tracker")
-    with st.expander("✅ JUNE: Python Core (Nets)"):
-        j1 = st.checkbox("Variables & Data Types")
-        j2 = st.checkbox("If/Else Decisions")
-        j3 = st.checkbox("For & While Loops")
-        j4 = st.checkbox("Lists & Dictionaries")
-        j5 = st.checkbox("Functions & Modules")
-        st.markdown("<div class='video-box'>📺 <a href='https://www.youtube.com/results?search_query=freecodecamp+python' target='_blank'>FreeCodeCamp: Python Course</a></div>", unsafe_allow_html=True)
-    
-    with st.expander("✅ JULY - AUGUST: Middle Overs"):
-        st.checkbox("SQL Selection & Joins")
-        st.checkbox("Pandas Analytics")
-        st.checkbox("ML Regression Models")
-    
-    with st.expander("✅ SEPTEMBER: GenAI (Magic Phase)"):
-        st.checkbox("LLM Attention & Transformers")
-        st.checkbox("Sentiment Capstone Finalization")
+# --- 8. SECTOR: MASTER SCORECARD (ALL 37 POINTS) ---
+elif nav_choice == "📊 Master Scorecard (37 Points)":
+    st.title("📊 Complete 37-Point Mastery Tracker")
+    st.write("Every single milestone from June to December. Check them off as you score.")
 
-    st.progress((j1+j2+j3+j4+j5)/37)
+    # JUNE (10 POINTS)
+    with st.expander("📅 JUNE: Python Core Foundations"):
+        j1 = st.checkbox("Variable Memory & Object Naming")
+        j2 = st.checkbox("Data Types (Int, Float, String, Bool)")
+        j3 = st.checkbox("Comparison Operators (==, !=, >)")
+        j4 = st.checkbox("Logical Operators (AND, OR, NOT)")
+        j5 = st.checkbox("If, Elif, Else branches")
+        j6 = st.checkbox("For Loops (Definite Sequences)")
+        j7 = st.checkbox("While Loops (Indefinite Constraints)")
+        j8 = st.checkbox("Python Lists (Indexing & Slicing)")
+        j9 = st.checkbox("Python Dictionaries (Key-Value Maps)")
+        j10 = st.checkbox("Functional Programming (Returns & Scopes)")
+        st.markdown("<div class='video-box'>📺 <a href='https://www.youtube.com/results?search_query=freecodecamp+python' target='_blank'>June Masterclass</a></div>", unsafe_allow_html=True)
 
-# --- 9. LOGIC LAB ---
-elif menu_selection == "🧠 The Coding Nets (Logic Lab)":
-    st.title("🧠 The Interactive Logic Lab")
+    # JULY (7 POINTS)
+    with st.expander("📅 JULY: SQL & Data Processing"):
+        jy1 = st.checkbox("Relational Database Schemas")
+        jy2 = st.checkbox("SELECT, WHERE, and LIKE filters")
+        jy3 = st.checkbox("INNER JOIN and LEFT JOIN")
+        jy4 = st.checkbox("GROUP BY and HAVING Aggregates")
+        jy5 = st.checkbox("Pandas Series and DataFrames")
+        jy6 = st.checkbox("Data Cleaning (Dropna / Fillna)")
+        jy7 = st.checkbox("Handling Duplicate Records")
+        st.markdown("<div class='video-box'>📺 <a href='https://www.youtube.com/results?search_query=freecodecamp+sql' target='_blank'>July Masterclass</a></div>", unsafe_allow_html=True)
+
+    # AUGUST (7 POINTS)
+    with st.expander("📅 AUGUST: Machine Learning Algorithms"):
+        a1 = st.checkbox("Linear Regression (Continuous Outputs)")
+        a2 = st.checkbox("Logistic Regression (Binary Selection)")
+        a3 = st.checkbox("Decision Trees & Node Splitting")
+        a4 = st.checkbox("Random Forest Ensembles")
+        a5 = st.checkbox("Train-Test Data Splitting")
+        a6 = st.checkbox("Accuracy, Precision, and Recall math")
+        a7 = st.checkbox("Confusion Matrix Visualization")
+        st.markdown("<div class='video-box'>📺 <a href='https://www.youtube.com/results?search_query=statquest+machine+learning' target='_blank'>August Masterclass</a></div>", unsafe_allow_html=True)
+
+    # SEPTEMBER (7 POINTS)
+    with st.expander("📅 SEPTEMBER: Generative AI & Capstone"):
+        s1 = st.checkbox("Neural Networks & Activation Layers")
+        s2 = st.checkbox("Transformer Mechanics (Attention)")
+        s3 = st.checkbox("Ingesting LLM APIs (Gemini/OpenAI)")
+        s4 = st.checkbox("Prompt Engineering (System Persona)")
+        s5 = st.checkbox("Capstone: Sentiment Recommendation Layout")
+        s6 = st.checkbox("Capstone: Feature Vector Construction")
+        s7 = st.checkbox("Capstone: Live Deployment on Cloud")
+        st.markdown("<div class='video-box'>📺 <a href='https://www.youtube.com/results?search_query=andrej+karpathy+llm' target='_blank'>September Masterclass</a></div>", unsafe_allow_html=True)
+
+    # OCT-DEC (6 POINTS)
+    with st.expander("📅 OCTOBER - DECEMBER: Placements"):
+        o1 = st.checkbox("Linear & Binary Search algorithms")
+        o2 = st.checkbox("Bubble Sort & Merge Sort logic")
+        o3 = st.checkbox("HashMaps and Problem Solving")
+        o4 = st.checkbox("Resume: Tech Mahindra ➔ AI Engineer")
+        o5 = st.checkbox("GitHub Portfolio Documentation")
+        o6 = st.checkbox("Live Coding Interview Mocks")
+        st.markdown("<div class='video-box'>📺 <a href='https://www.youtube.com/results?search_query=coding+interview+prep' target='_blank'>Placement Masterclass</a></div>", unsafe_allow_html=True)
+
+    st.markdown("---")
+    checked = j1+j2+j3+j4+j5+j6+j7+j8+j9+j10+jy1+jy2+jy3+jy4+jy5+jy6+jy7+a1+a2+a3+a4+a5+a6+a7+s1+s2+s3+s4+s5+s6+s7+o1+o2+o3+o4+o5+o6
+    st.subheader(f"Overall Season Progress: {int((checked/37)*100)}%")
+    st.progress(checked/37)
+
+# --- 9. SECTOR: THE CODING NETS (LOGIC LAB) ---
+elif nav_choice == "🧠 The Coding Nets (Logic Lab)":
+    st.title("🧠 The Logic Training Nets")
+    st.write("Master algorithmic thinking through cricket rules.")
+    
+    st.subheader("Challenge: The Milestone Selection Logic")
     st.code("""
-player_runs = 45
-player_balls = 20
-strike_rate = (player_runs / player_balls) * 100
+# Scenario: A batsman scores runs. 
+# Logic: If runs >= 50 and balls < 30, it is an "Explosive" inning.
+# If runs >= 50 but balls >= 30, it is a "Solid" inning.
+# Else, "Keep Playing".
 
-if strike_rate > 200:
+runs = 52
+balls = 25
+
+if runs >= 50 and balls < 30:
     print("Explosive")
+elif runs >= 50:
+    print("Solid")
 else:
-    print("Anchor")
+    print("Keep Playing")
     """, language="python")
     
-    sim_guess = st.text_input("What exact word will print on screen?")
-    if st.button("Submit Review"):
-        if sim_guess.strip() == "Explosive":
+    guess = st.text_input("What exact word will print on the screen?")
+    if st.button("Submit Decision (DRS)"):
+        if guess.strip() == "Explosive":
             st.balloons()
-            st.success("🎯 BOUNDARY! +10 Runs!")
-            st.session_state.stadium_runs += 10
-
-# --- 10. CHAT WITH DEADPOOL (FIXED NAME) ---
-elif menu_selection == "💬 Chat with Deadpool (Direct Mode)":
-    st.title("💬 Talk to Deadpool (Direct Mode)")
-    st.write("No keys needed in the code. Uses your Streamlit Secrets.")
-    
-    user_prompt_entry = st.chat_input("Send a message to Deadpool...")
-    
-    if user_prompt_entry:
-        st.session_state.live_chat_history.append(f"Vamshi: {user_prompt_entry}")
-        try:
-            import google.generativeai as live_genai
-            secure_vault_key = st.secrets["GEMINI_API_KEY"]
-            live_genai.configure(api_key=secure_vault_key)
-            llm_processing_engine = live_genai.GenerativeModel('gemini-1.5-flash')
-            
-            persona_prompt = f"You are Deadpool, the sarcastic AI coding mentor. Help Vamshi. Question: {user_prompt_entry}"
-            model_output = llm_processing_engine.generate_content(persona_prompt)
-            deadpool_reply = model_output.text
-        except Exception as e:
-            deadpool_reply = f"Chimichangas! Check your 'Secrets' in Streamlit settings. Error: {str(e)}"
-            
-        st.session_state.live_chat_history.append(f"Deadpool ⚔️: {deadpool_reply}")
-
-    for structural_message in st.session_state.live_chat_history:
-        if structural_message.startswith("Vamshi:"):
-            st.markdown(f"🧑 **{structural_message}**")
+            st.success("🎯 BOUNDARY! 52 runs in 25 balls is Explosive. +10 Runs!")
+            st.session_state.runs += 10
         else:
-            st.markdown(f"<div class='stadium-card' style='border-left: 5px solid #e23636;'>🔴 <b>{structural_message}</b></div>", unsafe_allow_html=True)
+            st.error("❌ Dot Ball. Read the logic again. Is 25 less than 30? Yes!")
 
-# --- 11. ENGLISH TUNER ---
-elif menu_selection == "🗣️ Professional English Tuner":
-    st.title("🗣️ Technical Communication Coach")
+# --- 10. SECTOR: LIVE CHAT WITH DEADPOOL (DIRECT API MODE) ---
+elif nav_choice == "💬 Chat with Deadpool (AI Mode)":
+    st.title("💬 Talk to Deadpool (Direct Access)")
+    st.write("No more distractions. Just you and me. Ask anything—cricket, code, or life.")
+    
+    # SAFE SECRETS MODE
+    if "GEMINI_API_KEY" not in st.secrets:
+        st.error("🚨 DEADPOOL DISCONNECTED! I need my brain fuel (The API Key).")
+        st.markdown("""
+        ### How to connect Deadpool in 10 seconds:
+        1. Open **[Streamlit Cloud](https://share.streamlit.io/)**.
+        2. Click the **3 dots** next to your app and select **Settings**.
+        3. Go to **Secrets**.
+        4. Paste this: `GEMINI_API_KEY = "PASTE_YOUR_KEY_HERE"`
+        5. Save and refresh this page.
+        """)
+        st.info("Get a free key here: [Google AI Studio](https://aistudio.google.com/app/apikey)")
+    else:
+        try:
+            import google.generativeai as live_ai
+            live_ai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+            llm = live_ai.GenerativeModel('gemini-1.5-flash')
+            
+            user_msg = st.chat_input("What's on your mind, Vamshi?")
+            
+            if user_msg:
+                st.session_state.chat_log.append(f"Vamshi: {user_msg}")
+                persona = f"You are Deadpool, Vamshi's sarcastic but brilliant AI mentor. Be funny, use cricket talk, and motivate him. He is 23 and works at Tech Mahindra. Question: {user_msg}"
+                res = llm.generate_content(persona)
+                st.session_state.chat_log.append(f"Deadpool ⚔️: {res.text}")
+
+            for m in st.session_state.chat_log:
+                if m.startswith("Vamshi:"): st.write(f"🧑 **{m}**")
+                else: st.markdown(f"<div class='stadium-card' style='border-left: 5px solid #e23636;'>🔴 <b>{m}</b></div>", unsafe_allow_html=True)
+        except Exception as e:
+            st.error(f"Chimichangas! Something broke: {str(e)}")
+
+# --- 11. SECTOR: PROFESSIONAL ENGLISH TUNER ---
+elif nav_choice == "🗣️ Professional English Tuner":
+    st.title("🗣️ The Tech Interview Communication Coach")
     st.markdown("""
     <div class='stadium-card'>
-        <h3>🎤 2-Minute Vocal Routine</h3>
-        <p>1. Record yourself explaining 'What is a Loop' for 2 minutes in English.<br>2. Listen and fix one mistake. Repeat.</p>
+        <h3 style='color: #3b82f6;'>🎤 The 2-Minute Vocal Alignment Drill</h3>
+        <p>1. Open your voice recorder app on your phone.</p>
+        <p>2. Explain exactly <b>how a Python Loop works</b> out loud for 2 minutes.</p>
+        <p>3. Listen to your track. Delete it and record again until you sound confident and professional.</p>
     </div>
     """, unsafe_allow_html=True)
-    st.table(pd.DataFrame({
-        "Casual": ["I want to do code", "I am weak in logic"],
-        "Enterprise": ["I am implementing architecture", "I am optimizing my problem-solving paradigms"]
-    }))
+    
+    data = {
+        "What you say now": ["I want to do code for runs", "I wasted a lot of time", "I handle Thames water chat"],
+        "What an AI Engineer says": ["I am implementing logic architectures", "I am strategically re-aligning my technical timeline", "I manage high-pressure data escalation logs"]
+    }
+    st.table(pd.DataFrame(data))
