@@ -1,26 +1,26 @@
-import streamlit as str_layout
+import streamlit as st
 import datetime
 import pandas as pd
-import google.generativeai as gemini_ai
+import time
 
-# --- 1. PREMIUM ARENA ARCHITECTURE ---
-str_layout.set_page_config(
+# --- 1. PREMIUM ARENA CONFIGURATION ---
+st.set_page_config(
     page_title="Vamshi's Deadpool AI Stadium 2026",
     page_icon="⚔️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# --- 2. MAXIMUM EFFORT NEON CRIMSON & CHARCOAL THEME ---
-str_layout.markdown("""
+# --- 2. PREMIUM NEON CRIMSON & CHARCOAL THEME (HIGH INTERACTIVE) ---
+st.markdown("""
     <style>
-    /* Full Stadium Dark Mode */
+    /* Full Stadium Cyber Dark Background */
     .stApp {
-        background: radial-gradient(circle at center, #1a0505 0%, #000000 100%);
+        background: radial-gradient(circle at center, #1e0505 0%, #000000 100%);
         color: #f8fafc;
     }
     
-    /* The Dugout Sidebar */
+    /* The Dugout Sidebar Styling */
     section[data-testid="stSidebar"] {
         background-color: #110202 !important;
         border-right: 3px solid #e23636;
@@ -32,12 +32,12 @@ str_layout.markdown("""
         padding: 25px;
         border-radius: 15px;
         border: 2px solid #e23636;
-        box-shadow: 0 0 25px rgba(226, 54, 54, 0.25);
+        box-shadow: 0 0 25px rgba(226, 54, 54, 0.3);
         margin-bottom: 25px;
     }
     
     .video-box {
-        background: #111827;
+        background: #0f172a;
         padding: 15px;
         border-radius: 10px;
         border: 1px solid #3b82f6;
@@ -55,14 +55,15 @@ str_layout.markdown("""
         text-transform: uppercase;
         letter-spacing: 1.5px;
         transition: 0.3s all ease;
+        width: 100%;
     }
     
     .stButton>button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 0 30px rgba(226, 54, 54, 0.6);
+        box-shadow: 0 0 35px rgba(226, 54, 54, 0.7);
     }
     
-    h1, h2, h3 {
+    h1, h2, h3, h4 {
         color: #e23636;
         font-family: 'Impact', 'Arial Black', sans-serif;
         letter-spacing: 2px;
@@ -76,173 +77,201 @@ str_layout.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- 3. CORE COGNITIVE SYSTEM STATE ---
-if 'streak_counter' not in str_layout.session_state: str_layout.session_state.streak_counter = 1
-if 'stadium_runs' not in str_layout.session_state: str_layout.session_state.stadium_runs = 0
-if 'live_chat_history' not in str_layout.session_state: str_layout.session_state.live_chat_history = []
+# --- 3. PERSISTENT SYSTEM STATE ARRAYS ---
+if 'streak_counter' not in st.session_state: st.session_state.streak_counter = 1
+if 'stadium_runs' not in st.session_state: st.session_state.stadium_runs = 0
+if 'live_chat_history' not in st.session_state: st.session_state.live_chat_history = []
 
 # --- 4. TIMELINE ANCHORS ---
-start_match_day = datetime.date(2026, 6, 1)
-current_match_day = datetime.date(2026, 6, 1) # Forced System Time
+current_match_day = datetime.date(2026, 6, 1) # System Launch Date
 interview_match_day = datetime.date(2026, 10, 1)
 world_cup_deadline = datetime.date(2026, 12, 31)
 
-# --- 5. SIDEBAR CONTROL CENTER ---
-str_layout.sidebar.markdown("<h1 style='text-align: center; color: #e23636;'>⚔️ DEADPOOL AI</h1>", unsafe_allow_html=True)
-str_layout.sidebar.markdown("<p style='text-align: center; color: #9ca3af;'><b>PLAYER: VAMSHI THE ALL-ROUNDER</b></p>", unsafe_allow_html=True)
-str_layout.sidebar.markdown("---")
+# --- 5. SIDEBAR NAVIGATION COMMAND PAVILION ---
+st.sidebar.markdown("<h1 style='text-align: center; color: #e23636;'>⚔️ DEADPOOL AI</h1>", unsafe_allow_html=True)
+st.sidebar.markdown("<p style='text-align: center; color: #9ca3af;'><b>PLAYER: VAMSHI THE ALL-ROUNDER</b></p>", unsafe_allow_html=True)
+st.sidebar.markdown("---")
 
-str_layout.sidebar.markdown(f"🔥 **Current Streak:** `{str_layout.session_state.streak_counter} Days Continuous`")
-if str_layout.sidebar.button("🏏 LOG DAILY PRACTICE"):
-    str_layout.session_state.streak_counter += 1
-    str_layout.sidebar.success("Innings saved! Streak increased.")
+st.sidebar.markdown(f"🔥 **Current Win Streak:** `{st.session_state.streak_counter} Matches`")
+if st.sidebar.button("🏏 LOG PRACTICE INNINGS"):
+    st.session_state.streak_counter += 1
+    st.sidebar.success("Streak Saved! Keep going.")
 
-menu_selection = str_layout.sidebar.radio("CHOOSE SECTOR:", [
+menu_selection = st.sidebar.radio("CHOOSE SECTOR:", [
     "🏟️ The Pavilion (Dashboard)",
-    "📊 Complete 7-Month Scorecard",
-    "🧠 The Coding Nets (Simulator)",
+    "📅 Complete 7-Month Roadmap",
+    "📊 Master Progress Scorecard",
+    "🧠 The Coding Nets (Logic Lab)",
     "💬 Chat with Deadpool (API Mode)",
     "🗣️ Professional English Tuner"
 ])
 
 # --- 6. SECTOR: THE PAVILION (DASHBOARD) ---
 if menu_selection == "🏟️ The Pavilion (Dashboard)":
-    str_layout.title("🏟️ THE MAIN PAVILION")
-    str_layout.write("Wankhede Stadium under the neon lights. The scoreboard is clean. Time to shine.")
+    st.title("🏟️ THE MAIN COMMAND PAVILION")
+    st.write("Wankhede Stadium under neon lights. Today is June 1, 2026. Your comeback innings starts right now.")
     
-    col1, col2, col3 = str_layout.columns(3)
+    col1, col2, col3 = st.columns(3)
     with col1:
-        str_layout.markdown(f"<div class='stadium-card'><h5>Days to October 1st Finals</h5><h2 class='gold-glow'>{(interview_match_day - current_match_day).days} Days</h2></div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='stadium-card'><h5>Days to October 1st Finals</h5><h2 class='gold-glow'>{(interview_match_day - current_match_day).days} Days</h2></div>", unsafe_allow_html=True)
     with col2:
-        str_layout.markdown("<div class='stadium-card'><h5>Current Title</h5><h2 style='color: #3b82f6;'>Pace All-Rounder ⚡</h2></div>", unsafe_allow_html=True)
+        st.markdown("<div class='stadium-card'><h5>Current Title Rank</h5><h2 style='color: #3b82f6;'>Pace All-Rounder ⚡</h2></div>", unsafe_allow_html=True)
     with col3:
-        str_layout.markdown(f"<div class='stadium-card'><h5>Stadium Score</h5><h2 style='color: #10b981;'>{str_layout.session_state.stadium_runs} Runs</h2></div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='stadium-card'><h5>Your Stadium Score</h5><h2 style='color: #10b981;'>{st.session_state.stadium_runs} Runs</h2></div>", unsafe_allow_html=True)
 
-    str_layout.subheader("🔋 Post-Shift Fatigue Strategy Optimizer")
-    energy_input = str_layout.select_slider("What is your human processing power right now?", options=["0% (Dead Exhausted)", "25% (Fatigued)", "50% (Steady)", "100% (Match Ready)"])
+    st.subheader("🔋 Post-Shift Fatigue Strategy Optimizer")
+    energy_input = st.select_slider("What is your human processing power right now?", options=["0% (Dead Exhausted)", "25% (Fatigued)", "50% (Steady)", "100% (Match Ready)"])
     
     if "0%" in energy_input:
-        str_layout.error("🚨 Brain battery low. Do not try complex data modeling tonight. Head over to the **'Chat with Deadpool'** tab, ask a quick text question, clean up your headspace, and get your solid 7 hours of sleep.")
+        st.error("🚨 Fatigue Boundary Reached! Do not type code tonight. Open the 'Chat with Deadpool' tab, read one quick analogy to protect your mindset, get your 7 hours of sleep, and rest.")
     elif "25%" in energy_input:
-        str_layout.warning("⚡ Fatigue detected. Open the **'Complete 7-Month Scorecard'** tab, review the expanders for 15 minutes, and click one of the pre-linked YouTube searches.")
+        st.warning("⚡ Low Energy. Spend 15 minutes checking off items on the Master Scorecard and watch one short embedded YouTube link.")
     else:
-        str_layout.success("🔥 Powerplay active! Dive into **'The Coding Nets'** and execute the interactive logic scenarios.")
+        st.success("🔥 Powerplay active! Open 'The Coding Nets' and crush the logic simulator quiz right now.")
 
-    str_layout.markdown("""
+    st.markdown("""
     <div class='stadium-card'>
         <h3 style='color: #e23636;'>⚔️ Deadpool's Corner</h3>
-        <p><i>"Look, Vamshi. You are 23. You manage customer escalations and chat operations during intense shifts—that means your brain is already wired to handle messy data errors and angry parameters under pressure. AI engineering isn't a magic spell; it's just telling a computer how to handle parameters step-by-step. Let's get to work. Maximum Effort."</i></p>
+        <p><i>"Look, Vamshi. You are 23 years old. You handle customer care chat processes and intense escalations for 12 hours a day. That means your brain is already built to solve broken problems under extreme pressure. AI engineering isn't magic; it's just telling a machine how to filter and handle options step-by-step. Let's make this comeback real. Maximum Effort."</i></p>
     </div>
     """, unsafe_allow_html=True)
 
-# --- 7. SECTOR: THE COMPLETE 7-MONTH SYLLABUS SCORECARD ---
-elif menu_selection == "📊 Complete 7-Month Scorecard":
-    str_layout.title("📊 The Complete 7-Month Interactive Progress Scorecard")
-    str_layout.write("Every single milestone from June 1st to December 31st explicitly built out. Check them off as you conquer them.")
-
-    # JUNE
-    with str_layout.expander("📅 PHASE 1: JUNE — Python Logic Foundations (The Opening Stand)"):
-        str_layout.markdown("##### 🚀 Foundational Milestones:")
-        j1 = str_layout.checkbox("Memory Allocation: Variables, Core Objects & Naming Conventions")
-        j2 = str_layout.checkbox("Data Structures: Integers, Floating Vectors, Text Strings, and Booleans")
-        j3 = str_layout.checkbox("Comparison Mechanics: Evaluating Truth States (==, !=, >, <)")
-        j4 = str_layout.checkbox("Logical Operators: Chaining Structural Conditions (AND, OR, NOT)")
-        j5 = str_layout.checkbox("Conditional Trees: Implementation of complex If, Elif, and Else branches")
-        j6 = str_layout.checkbox("Iteration Loops: For Loops (Processing definite numerical sequences)")
-        j7 = str_layout.checkbox("Conditional Loops: While Loops (Iterating until structural criteria is reached)")
-        j8 = str_layout.checkbox("Data Layouts Part 1: Python Lists (Slicing, structural indexing, appending arrays)")
-        j9 = str_layout.checkbox("Data Layouts Part 2: Dictionaries (Key-Value map data optimization)")
-        j10 = str_layout.checkbox("Functional Blueprints: Defining modular functions, processing parameters, and return statements")
-        
-        str_layout.markdown("<div class='video-box'>📺 <b>High-Dopamine Video Resources:</b><br>"
-                            "• <a href='https://www.youtube.com/results?search_query=freecodecamp+python+for+beginners+full+course' target='_blank'>FreeCodeCamp: Python Foundational Programming Masterclass</a><br>"
-                            "• <a href='https://www.youtube.com/results?search_query=corey+schafer+python+playlist' target='_blank'>Corey Schafer: Production-Grade Python Tutorials</a></div>", unsafe_allow_html=True)
-
-    # JULY
-    with str_layout.expander("📅 PHASE 2: JULY — Relational Databases & SQL Processing (The Middle Overs)"):
-        str_layout.markdown("##### 🚀 Foundational Milestones:")
-        jy1 = str_layout.checkbox("Relational Architecture: Database design, schemas, and structural tables")
-        jy2 = str_layout.checkbox("Query Selection: Extraction arrays with SELECT, WHERE, LIKE, and IN boundaries")
-        jy3 = str_layout.checkbox("Relational Joins: Merging data via INNER JOIN and LEFT JOIN structures")
-        jy4 = str_layout.checkbox("Advanced Data Merging: Harnessing RIGHT JOIN and FULL OUTER JOIN matrices")
-        jy5 = str_layout.checkbox("Data Groupings: Organizing datasets using GROUP BY, HAVING, and aggregate formulas (SUM, COUNT, AVG)")
-        jy6 = str_layout.checkbox("Pandas Engineering: Translating tables into high-speed Series and DataFrames")
-        jy7 = str_layout.checkbox("Data Cleansing: Structural dropna, fillna, and treating data format discrepancies")
-        
-        str_layout.markdown("<div class='video-box'>📺 <b>High-Dopamine Video Resources:</b><br>"
-                            "• <a href='https://www.youtube.com/results?search_query=freecodecamp+sql+tutorial+for+beginners' target='_blank'>FreeCodeCamp: Complete Structured Query Language Guide</a><br>"
-                            "• <a href='https://www.youtube.com/results?search_query=keith+galli+pandas+tutorial' target='_blank'>Keith Galli: Comprehensive Pandas Data Analysis Training</a></div>", unsafe_allow_html=True)
-
-    # AUGUST
-    with str_layout.expander("📅 PHASE 3: AUGUST — Machine Learning Pipelines (The Accelerated Run Rate)"):
-        str_layout.markdown("##### 🚀 Foundational Milestones:")
-        a1 = str_layout.checkbox("Supervised Equations: Linear Regression mechanics, slopes, intercepts, and continuous outputs")
-        a2 = str_layout.checkbox("Classification Methods: Logistic Regression mathematical boundaries & Sigmoid optimization")
-        a3 = str_layout.checkbox("Tree Architectures: Structuring Decision Trees and running Random Forest ensembles")
-        a4 = str_layout.checkbox("Feature Scaling: Standardizing and normalizing varied input data bounds")
-        a5 = str_layout.checkbox("Validation Splitting: Train-Test splitting strategies and protecting model validation states")
-        a6 = str_layout.checkbox("Evaluation Frameworks: Precision vs Recall equations and calculating F1-Scores")
-        a7 = str_layout.checkbox("The Performance Matrix: Structuring Confusion Matrices to capture false positives/negatives")
-        
-        str_layout.markdown("<div class='video-box'>📺 <b>High-Dopamine Video Resources:</b><br>"
-                            "• <a href='https://www.youtube.com/results?search_query=statquest+machine+learning' target='_blank'>StatQuest: Machine Learning Foundations Broken Down Visually</a><br>"
-                            "• <a href='https://www.youtube.com/results?search_query=programming+with+mosh+machine+learning' target='_blank'>Programming with Mosh: Practical Machine Learning Essentials</a></div>", unsafe_allow_html=True)
-
-    # SEPTEMBER
-    with str_layout.expander("📅 PHASE 4: SEPTEMBER — Generative AI & Capstone Deployment (The Death Overs)"):
-        str_layout.markdown("##### 🚀 Foundational Milestones:")
-        s1 = str_layout.checkbox("Deep Learning Mechanics: Artificial Neural Networks, processing nodes, and activation layers")
-        s2 = str_layout.checkbox("Transformer Architecture: Attention layers, computational tokenization, and structural context text processing")
-        s3 = str_layout.checkbox("API Engineering: Ingesting live operational endpoints from OpenAI and Google Gemini")
-        s4 = str_layout.checkbox("System Prompt Architecture: Few-shot prompting strategies and enforcing system personas")
-        s5 = str_layout.checkbox("Capstone Phase 1: Planning text parsing loops for the Sentiment-Based Product Recommendation System")
-        s6 = str_layout.checkbox("Capstone Phase 2: Processing text data strings to isolate client sentiment categories")
-        s7 = str_layout.checkbox("Capstone Phase 3: Packaging and deploying your completed model live onto Streamlit Cloud platforms")
-        
-        str_layout.markdown("<div class='video-box'>📺 <b>High-Dopamine Video Resources:</b><br>"
-                            "• <a href='https://www.youtube.com/results?search_query=andrej+karpathy+intro+to+llms' target='_blank'>Andrej Karpathy: Introduction to Modern Large Language Models</a><br>"
-                            "• <a href='https://www.youtube.com/results?search_query=freecodecamp+generative+ai+course' target='_blank'>FreeCodeCamp: Comprehensive Generative AI Application Engineering</a></div>", unsafe_allow_html=True)
-
-    # OCTOBER - DECEMBER
-    with str_layout.expander("📅 PHASE 5: OCTOBER - DECEMBER — Strategic Placement Blitz (Lifting The Trophy)"):
-        str_layout.markdown("##### 🚀 Foundational Milestones:")
-        o1 = str_layout.checkbox("Search Algorithms: Writing programmatic Linear Search and optimized Binary Search models")
-        o2 = str_layout.checkbox("Sorting Paradigms: Mechanics of Bubble Sort, Merge Sort, and evaluating execution granularities")
-        o3 = str_layout.checkbox("Interview Core Structures: Managing data sequences cleanly using Arrays, Strings, and quick HashMaps")
-        o4 = str_layout.checkbox("Resume Remodeling: Structuring previous support experience into technical Data Engineering metrics")
-        o5 = str_layout.checkbox("GitHub Pipeline Polish: Organizing well-documented repositories to showcase to hiring engineering leads")
-        o6 = str_layout.checkbox("Live Screener Simulations: Tackling whiteboards and talking through code logic under pressure")
-        
-        str_layout.markdown("<div class='video-box'>📺 <b>High-Dopamine Video Resources:</b><br>"
-                            "• <a href='https://www.youtube.com/results?search_query=freecodecamp+data+structures+and+algorithms' target='_blank'>FreeCodeCamp: Data Structures and Algorithms Deep Dive</a><br>"
-                            "• <a href='https://www.youtube.com/results?search_query=tech+interview+pro+coding+interview' target='_blank'>Tech Interview Pro: Cracking Advanced Technical Screening Boards</a></div>", unsafe_allow_html=True)
-
-    # LIVE COMPLETION COUNTER
-    str_layout.markdown("---")
-    str_layout.subheader("🏆 Live Championship Mastery Progress")
-    checked_items = j1+j2+j3+j4+j5+j6+j7+j8+j9+j10+jy1+jy2+jy3+jy4+jy5+jy6+jy7+a1+a2+a3+a4+a5+a6+a7+s1+s2+s3+s4+s5+s6+s7+o1+o2+o3+o4+o5+o6
-    final_ratio = checked_items / 37
-    str_layout.write(f"Syllabus Objectives Unlocked: **{checked_items} / 37 modules**")
-    str_layout.progress(final_ratio)
-
-# --- 8. SECTOR: THE CODING NETS (LOGIC SIMULATOR) ---
-elif menu_selection == "🧠 The Coding Nets (Simulator)":
-    str_layout.title("🧠 The Interactive Logic Playground")
-    str_layout.write("Refining your data logic structures without worrying about spelling or syntax bugs.")
+# --- 7. SECTOR: THE COMPLETE 7-MONTH ROADMAP ---
+elif menu_selection == "📅 Complete 7-Month Roadmap":
+    st.title("📅 The 2026 Professional Career Transition Roadmap")
+    st.write("Your month-by-month tournament layout. No shortcuts, no fluff.")
     
-    str_layout.markdown("""
-    ### 🛠️ Problem Solving Strategy: The 'DRS' Engine
-    *   **D (Define Inputs):** Isolate the variables you hold inside your program's memory banks.
-    *   **R (Refine Conditions):** Define the exact rules of the match scenario (e.g. tracking boundaries).
-    *   **S (Solve Sequentially):** Plan out the tracking steps in clean words before writing functional lines.
+    st.markdown("""
+    <div class='stadium-card'>
+        <h3>🏏 PHASE 1: THE NETS PRACTICE (June - July)</h3>
+        <p><b>Objective:</b> Build pure algorithmic thinking and data management patterns from absolute zero.</p>
+        <ul>
+            <li><b>June:</b> Python Variables, Logic Loops, Arrays, Conditionals, and Functional blueprints.</li>
+            <li><b>July:</b> SQL Relational Database Queries, Multi-table Joins, and Pandas analytical DataFrames.</li>
+        </ul>
+    </div>
+    
+    <div class='stadium-card'>
+        <h3>🎯 PHASE 2: THE ACCELERATED RUN RATE (August - September)</h3>
+        <p><b>Objective:</b> Master mathematical prediction models and 'Magical' Generative AI architectures.</p>
+        <ul>
+            <li><b>August:</b> Linear & Logistic Regression, Decision Trees, Random Forests, and Scikit-Learn pipelines.</li>
+            <li><b>September:</b> Neural Networks, Large Language Models (LLMs), Prompt Engineering, and Capstone Project completion.</li>
+        </ul>
+    </div>
+    
+    <div class='stadium-card'>
+        <h3>🏆 PHASE 3: THE WORLD CUP FINALS (October - December)</h3>
+        <p><b>Objective:</b> Active interview execution, portfolio deployment, and landing the offer letter.</p>
+        <ul>
+            <li><b>October 1st:</b> Launch applications. Review sorting routines, data structures, and rewrite resume metrics.</li>
+            <li><b>Nov - Dec:</b> Run live coding mocks, clear interview panels, and secure the junior AI/ML engineer role.</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+
+# --- 8. SECTOR: THE COMPLETE INTERACTIVE SYLLABUS TRACKER ---
+elif menu_selection == "📊 Complete 7-Month Scorecard":
+    st.title("📊 Complete 7-Month Interactive Progress Scorecard")
+    st.write("Every single technical topic from June 1st to December 31st typed out. Check them off as you conquer them.")
+
+    # --- JUNE CHECKBOXES ---
+    st.markdown("### 📅 JUNE: Python Core & Logic Foundations")
+    j1 = st.checkbox("Variables, Core Memory Buckets & Object Naming Guidelines")
+    j2 = st.checkbox("Data Types: Integers, Floating Vectors, Strings, and Boolean States")
+    j3 = st.checkbox("Comparison Mechanics: Evaluating Truth values (==, !=, >, <)")
+    j4 = st.checkbox("Logical Operators: Linking multiple conditions together (AND, OR, NOT)")
+    j5 = st.checkbox("Conditional Architectures: Writing nested If, Elif, and Else branches")
+    j6 = st.checkbox("Iteration Control: For Loops (Processing definite data arrays)")
+    j7 = st.checkbox("Conditional Control: While Loops (Iterating until conditions fail)")
+    j8 = st.checkbox("Data Layouts Part 1: Python Lists (Slicing, indexing, and appending variables)")
+    j9 = st.checkbox("Data Layouts Part 2: Dictionaries (Key-Value map data layouts)")
+    j10 = st.checkbox("Functional Programming: Defining reusable functions, processing arguments, and return scope")
+    st.markdown("<div class='video-box'>📺 <b>June Masterclass Video Links:</b><br>"
+                "• <a href='https://www.youtube.com/results?search_query=freecodecamp+python+full+course' target='_blank'>FreeCodeCamp: Python Foundational Programming Masterclass</a><br>"
+                "• <a href='https://www.youtube.com/results?search_query=corey+schafer+python+beginner' target='_blank'>Corey Schafer: Production-Grade Python Playlist</a></div>", unsafe_allow_html=True)
+    st.markdown("---")
+
+    # --- JULY CHECKBOXES ---
+    st.markdown("### 📅 JULY: Relational Databases & Data Manipulation")
+    jy1 = st.checkbox("Relational Architecture: Database patterns, schemas, and relational tables")
+    jy2 = str_layout.checkbox("Query Selection: Writing extractions with SELECT, WHERE, LIKE, and IN constraints")
+    jy3 = st.checkbox("Relational Joins: Merging table blocks via INNER JOIN and LEFT JOIN structures")
+    jy4 = st.checkbox("Advanced Relational Joins: Processing RIGHT JOIN and FULL OUTER JOIN matrices")
+    jy5 = st.checkbox("Data Groupings: Harnessing GROUP BY, HAVING, and aggregations (SUM, COUNT, AVG)")
+    jy6 = st.checkbox("Pandas Engineering: Loading dataset tables into speed-optimized Series and DataFrames")
+    jy7 = st.checkbox("Data Cleansing Arrays: Treating missing data rows, null variables, and formatting bugs")
+    st.markdown("<div class='video-box'>📺 <b>July Masterclass Video Links:</b><br>"
+                "• <a href='https://www.youtube.com/results?search_query=freecodecamp+sql+tutorial' target='_blank'>FreeCodeCamp: Complete Structured Query Language Guide</a><br>"
+                "• <a href='https://www.youtube.com/results?search_query=keith+galli+pandas' target='_blank'>Keith Galli: Complete Pandas Data Wrangling Tutorial</a></div>", unsafe_allow_html=True)
+    st.markdown("---")
+
+    # --- AUGUST CHECKBOXES ---
+    st.markdown("### 📅 AUGUST: Core Machine Learning Pipelines")
+    a1 = st.checkbox("Supervised Equations: Linear Regression math, slopes, intercepts, and continuous paths")
+    a2 = st.checkbox("Classification Methods: Logistic Regression mathematical boundaries & Sigmoid metrics")
+    a3 = st.checkbox("Tree Paradigms: Building Decision Trees and running Random Forest ensembles")
+    a4 = st.checkbox("Feature Transformations: Normalizing, standardizing, and scaling numerical columns")
+    a5 = st.checkbox("Validation Splitting: Train-Test splitting methods and protecting validation states")
+    a6 = st.checkbox("Evaluation Frameworks: Precision, Recall, and calculating unified F1-Scores")
+    a7 = st.checkbox("The Performance Matrix: Structuring Confusion Matrices to map prediction anomalies")
+    st.markdown("<div class='video-box'>📺 <b>August Masterclass Video Links:</b><br>"
+                "• <a href='https://www.youtube.com/results?search_query=statquest+machine+learning' target='_blank'>StatQuest: Machine Learning Fundamentals Explained Visually</a><br>"
+                "• <a href='https://www.youtube.com/results?search_query=programming+with+mosh+machine+learning' target='_blank'>Programming with Mosh: Python Machine Learning Basics</a></div>", unsafe_allow_html=True)
+    st.markdown("---")
+
+    # --- SEPTEMBER CHECKBOXES ---
+    st.markdown("### 📅 SEPTEMBER: Generative AI Foundations & Capstone Delivery")
+    s1 = st.checkbox("Deep Learning Mechanics: Neural Networks, interconnected weights, biases, and activation nodes")
+    s2 = st.checkbox("Transformer Architecture: Attention mechanics, text tokenization, and context sequence tracking")
+    s3 = st.checkbox("API Integration: Connecting and sending payloads through OpenAI and Google Gemini developer tools")
+    s4 = st.checkbox("Prompt Engineering Optimizations: System role setups, few-shot conditioning, and structure enforcement")
+    s5 = st.checkbox("Capstone Initialization: Planning parsing structures for the Sentiment-Based Product Recommendation System")
+    s6 = st.checkbox("Capstone Development: Building text classification code to process and catch customer sentiments")
+    s7 = st.checkbox("Capstone Hosting: Packing, debugging, and deploying your complete final system onto Streamlit Cloud")
+    st.markdown("<div class='video-box'>📺 <b>September Masterclass Video Links:</b><br>"
+                "• <a href='https://www.youtube.com/results?search_query=andrej+karpathy+intro+to+llms' target='_blank'>Andrej Karpathy: Intro to Modern Large Language Models</a><br>"
+                "• <a href='https://www.youtube.com/results?search_query=freecodecamp+langchain' target='_blank'>FreeCodeCamp: Generative AI Application Development Masterclass</a></div>", unsafe_allow_html=True)
+    st.markdown("---")
+
+    # --- OCTOBER TO DECEMBER CHECKBOXES ---
+    st.markdown("### 📅 OCTOBER - DECEMBER: Strategic Placement Blitz")
+    o1 = st.checkbox("Algorithmic Basics: Implementing basic Linear Search and high-speed Binary Search loops")
+    o2 = st.checkbox("Sorting Routines: Coding Bubble Sort, Merge Sort, and tracking execution complexities")
+    o3 = st.checkbox("Interview Core Structures: Solving problem matrix layouts using Arrays, Strings, and quick HashMaps")
+    o4 = st.checkbox("Resume Remodeling: Turning previous customer support and ticket management metrics into Technical Operations")
+    o5 = st.checkbox("Portfolio Presentation: Deploying cleanly documented coding repositories directly onto your GitHub profile")
+    o6 = st.checkbox("Live Interview Strategy: Talking through your logic cleanly during whiteboard coding panels")
+    st.markdown("<div class='video-box'>📺 <b>October Masterclass Video Links:</b><br>"
+                "• <a href='https://www.youtube.com/results?search_query=freecodecamp+data+structures+and+algorithms' target='_blank'>FreeCodeCamp: Data Structures and Algorithms Full Course</a><br>"
+                "• <a href='https://www.youtube.com/results?search_query=ml+engineer+interview+questions' target='_blank'>Tech Interview Pro: Cracking the Technical AI Engineer Screener</a></div>", unsafe_allow_html=True)
+
+    # MASTER CALCULATION
+    st.markdown("---")
+    st.subheader("📊 Live Mastery Percentage Tracker")
+    total_ticked = j1+j2+j3+j4+j5+j6+j7+j8+j9+j10+jy1+jy2+jy3+jy4+jy5+jy6+jy7+a1+a2+a3+a4+a5+a6+a7+s1+s2+s3+s4+s5+s6+s7+o1+o2+o3+o4+o5+o6
+    score_ratio = total_ticked / 37
+    st.write(f"Championship Objectives Conquered: **{total_ticked} / 37 items**")
+    st.progress(score_ratio)
+
+# --- 9. SECTOR: THE CODING NETS (LOGIC SIMULATOR) ---
+elif menu_selection == "🧠 The Coding Nets (Simulator)":
+    st.title("🧠 The Interactive Logic Training Ground")
+    st.write("Learn how code parameters work using pure cricket rules. No boring math textbooks.")
+    
+    st.markdown("""
+    ### 🛠️ Problem Solving Strategy: The 'DRS' Mental Engine
+    *   **D (Define Inputs):** Identify the raw metrics you hold inside your variable buckets.
+    *   **R (Refine Conditions):** Isolate the exact boundaries of the rule (e.g. tracking boundaries).
+    *   **S (Solve Sequentially):** Plan out your tracking logic step-by-step before writing a single character of code.
     """)
     
-    str_layout.subheader("🏟️ Match Scenario: The Net Run Rate Threshold Optimizer")
-    str_layout.write("Scenario: A team finishes their chasing innings. We hold their calculated **Net Run Rate (NRR)** inside a memory bucket.")
-    str_layout.write("If their final NRR value is strictly higher than `+1.50`, our script needs to flag them as `'Qualifiers'`. If it is lower, it flags them as `'Knocked Out'`.")
+    st.subheader("🏟️ Interactive Challenge: The Net Run Rate Threshold Filter")
+    st.write("Scenario: A league team wraps up their season. We hold their evaluated **Net Run Rate (NRR)** inside a variable.")
+    st.write("If their NRR is strictly higher than `+1.50`, our logic must return `'Qualifiers'`. If it is lower, it returns `'Knocked Out'`.")
     
-    str_layout.code("""
-# Let's inspect the conceptual code logic:
+    st.code("""
+# Inspect the script layout:
 team_nrr = 1.85
 
 if team_nrr > 1.50:
@@ -251,93 +280,91 @@ else:
     print("Knocked Out")
     """, language="python")
     
-    str_layout.subheader("🕹️ Live Execution Simulator")
-    sim_answer = str_layout.text_input("Look closely at the script above. What word will print on the screen when Python executes this code block? (Type it exactly):")
+    st.subheader("🕹️ Live Execution Simulator")
+    sim_guess = st.text_input("Look closely at the script blocks above. What exact word will print on the screen when Python executes this code?")
     
-    if str_layout.button("Submit Decision Review (DRS)"):
-        if sim_answer.strip() == "Qualifiers":
-            str_layout.balloons()
-            str_layout.success("🎯 BOUNDARY! Splendid reading. Because 1.85 is greater than 1.50, the condition resolves true and outputs 'Qualifiers'. You earned 10 Runs!")
-            str_layout.session_state.stadium_runs += 10
-        elif sim_answer.strip() == "":
-            str_layout.warning("Type your target solution into the input slot first.")
+    if st.button("Submit Decision Review (DRS)"):
+        if sim_guess.strip() == "Qualifiers":
+            st.balloons()
+            st.success("🎯 BOUNDARY! Superb reading, Vamshi. Because 1.85 is greater than 1.50, the condition checks out true and executes the first option. You scored +10 Runs!")
+            st.session_state.stadium_runs += 10
+        elif sim_guess.strip() == "":
+            st.warning("Type your solution choice into the text input block first.")
         else:
-            st_layout.error("❌ Clean bowled! Let's re-read line 4: Is 1.85 greater than 1.50? Yes. So Python bypasses the 'else' block and targets the first print statement. Type the correct word to retry!")
+            st.error("❌ Clean Bowled! Let's re-read line 4: Is 1.85 higher than 1.50? Yes, it is! So Python skips the 'else' block and hits the first print. Correct your spelling and hit submit again!")
 
-# --- 9. SECTOR: OPEN-ENDED CHAT WITH DEADPOOL (LIVE API MODEL) ---
+# --- 10. SECTOR: LIVE CHAT WITH DEADPOOL (SAFE IMPORT DESIGN) ---
 elif menu_selection == "💬 Chat with Deadpool (API Mode)":
-    str_layout.title("💬 Open-Ended Chat Workspace with Deadpool")
-    str_layout.write("No pre-baked dropdowns. Ask anything you want—coding logic, data architecture, general knowledge, or cricket stats. It is an open arena.")
+    st.title("💬 Open-Ended Chat Workspace with Deadpool")
+    st.write("No limited choices or annoying dropdowns. Ask anything you want—coding logic, data systems, general knowledge, or cricket metrics.")
     
-    # User inputs their API Key securely right inside the interface
-    custom_gemini_key = str_layout.text_input("🗝️ Optional: Paste your Google Gemini API Key below to unlock live data processing power:", type="password")
+    secure_api_key = st.text_input("🗝️ Enter Google Gemini API Key to activate Deadpool live:", type="password")
+    st.markdown("---")
     
-    str_layout.markdown("---")
-    str_layout.write("💬 **Conversation Arena**")
+    user_chat_input = st.chat_input("Ask Deadpool anything...")
     
-    user_prompt_input = str_layout.chat_input("Ask Deadpool anything (e.g., 'Explain array index values using cricket field settings'...)")
-    
-    if user_prompt_input:
-        str_layout.session_state.live_chat_history.append(f"Vamshi: {user_prompt_input}")
+    if user_chat_input:
+        st.session_state.live_chat_history.append(f"Vamshi: {user_chat_input}")
         
-        if custom_gemini_key:
+        if secure_api_key:
             try:
-                gemini_ai.configure(api_key=custom_gemini_key)
-                text_generation_engine = gemini_ai.GenerativeModel('gemini-pro')
-                ai_query_payload = (
-                    "You are Deadpool, the hilarious, fast-talking, sarcastic mercenary who is also a deeply supportive and brilliant AI coding mentor. "
-                    "You are coaching Vamshi, an absolute beginner from an EEE background who balances a 12-hour customer care shift while mastering Python and AI. "
-                    "Always reply in Deadpool's voice, address him as Vamshi, keep motivation extremely high, and use cricket analogies whenever explaining complex ideas. "
-                    f"User prompt: {user_prompt_input}"
+                # SAFE LOCAL IMPORT ENGINE
+                import google.generativeai as live_genai
+                live_genai.configure(api_key=secure_api_key)
+                llm_engine = live_genai.GenerativeModel('gemini-pro')
+                
+                payload_instructions = (
+                    "You are Deadpool, the funny, sarcastic, mouthy mercenary who is also a deeply caring and brilliant AI coding mentor. "
+                    "You are helping your student Vamshi, a 23-year-old absolute beginner with an EEE background who works an exhausting 12-hour customer care shift "
+                    "at Tech Mahindra. Always talk in Deadpool's voice, use hilarious cricket analogies, keep his confidence sky-high, and answer his questions completely. "
+                    f"User question: {user_chat_input}"
                 )
-                computed_response = text_generation_engine.generate_content(ai_query_payload)
-                deadpool_reply = computed_response.text
-            except Exception as system_fault:
-                deadpool_reply = f"Chimichangas! I tried hitting that ball out of the stadium, but the API network thrown an error: {str(system_fault)}. Double-check your key configuration, kid!"
+                model_output = llm_engine.generate_content(payload_instructions)
+                ai_reply = model_output.text
+            except Exception as e:
+                ai_reply = f"Chimichangas! I tried running that logic but the API server returned an error: {str(e)}. Make sure your key is fresh, kid!"
         else:
-            # High-fidelity offline fallback persona response
-            deadpool_reply = (
-                "Hey Vamshi! I am currently running in Offline Mode because you haven't plugged in your secure Google API key at the top of the tab yet! "
-                "But let me give you a quick Deadpool baseline advice anyway: whatever question you just typed, break it down like a T20 chase. "
-                "If it's about python logic, isolate the variables first. If you are feeling exhausted after your shift, go rest! "
-                "Grab a free key from Google AI Studio, paste it above, and my full mouthy brain will answer your prompt live!"
+            ai_reply = (
+                "Hey Vamshi! I am currently running in Offline Mode because you haven't pasted your free Google API key into the field above yet! "
+                "No stress. Go to Google AI Studio, grab a free developer key, paste it here, and my full live mouthy brain will unlock. "
+                "Until then, remember: Today is June 1st. Day 1. Focus on your logic targets, stay at the crease, and let's win this match!"
             )
             
-        str_layout.session_state.live_chat_history.append(f"Deadpool ⚔️: {deadpool_reply}")
-        
-    for statement in str_layout.session_state.live_chat_history:
-        if statement.startswith("Vamshi:"):
-            str_layout.markdown(f"🧑 **{statement}**")
-        else:
-            str_layout.markdown(f"<div class='stadium-card' style='border-left: 4px solid #e23636;'>🔴 <b>{statement}</b></div>", unsafe_allow_html=True)
+        st.session_state.live_chat_history.append(f"Deadpool ⚔️: {ai_reply}")
 
-# --- 10. SECTOR: PROFESSIONAL ENGLISH TUNER ---
+    for message_block in st.session_state.live_chat_history:
+        if message_block.startswith("Vamshi:"):
+            st.markdown(f"🧑 **{message_block}**")
+        else:
+            st.markdown(f"<div class='stadium-card' style='border-left: 4px solid #e23636;'>🔴 <b>{message_block}</b></div>", unsafe_allow_html=True)
+
+# --- 11. SECTOR: PROFESSIONAL ENGLISH TUNER ---
 elif menu_selection == "🗣️ Professional English Tuner":
-    str_layout.title("🗣️ The Technical Interview Communication Tuner")
-    str_layout.write("Transforming your verbal structure from a 5/10 baseline up to an elite **8/10 interview standard** through simple daily routines.")
+    st.title("🗣️ The Tech Interview Communication Tuner")
+    st.write("Refining your verbal communication from a 5/10 baseline up to an elite **8/10 technical interview standard**.")
     
-    str_layout.markdown("""
+    st.markdown("""
     <div class='stadium-card'>
-        <h3 style='color: #3b82f6;'>🎤 The 2-Minute Vocal Performance Routine</h3>
-        <p>1. Open your smartphone's built-in voice recorder application right now.</p>
-        <p>2. Hit record, and explain out loud in English exactly <b>what a For Loop does</b> as if you are speaking directly to a senior recruiter.</p>
-        <p>3. Play back your voice recording. Track your hesitations. Identify where you lose clarity, correct one word choice, and record it a second time. This technique eliminates voice anxiety twice as fast as a textbook.</p>
+        <h3 style='color: #3b82f6;'>🎤 The Daily 2-Minute Vocal Performance Routine</h3>
+        <p>1. Open the default voice recording application on your mobile phone right now.</p>
+        <p>2. Press record, and explain out loud in English exactly <b>what an If/Else block does</b> as if you are speaking directly to a technical recruiter.</p>
+        <p>3. Play the track back. Notice where you hesitate or say 'um'. Fix that specific phrase structure and record it a second time. Doing this daily builds fluency twice as fast as reading books.</p>
     </div>
     """, unsafe_allow_html=True)
     
-    str_layout.subheader("📋 Executive Technical Transformation Matrix")
-    str_layout.write("Review this table before interviews to replace casual explanations with elite engineering language:")
+    st.subheader("📋 Executive Technical Vocabulary Matrix")
+    st.write("Review this table before interviews to replace casual phrasing with clean engineering language:")
     
-    transformation_matrix = {
-        "Casual Phrase (What you want to avoid)": [
-            "I want to make an app code that can find standard scores...",
-            "I have a lot of problems making my logic work inside variables...",
-            "I missed a lot of time before and now I want to start fresh..."
+    phrase_data = {
+        "Casual Phrase (Avoid this in interviews)": [
+            "I want to do a code that can calculate player scores...",
+            "I have a lot of mistakes and my logic is very weak inside code blocks...",
+            "I wasted a lot of time before and now I want to start fresh..."
         ],
-        "Enterprise Engineering Phrase (What to speak aloud)": [
-            "My target is to implement a modular processing architecture to isolate data metrics...",
-            "I am programmatically refining my logical processing design and variable handling paradigms...",
-            "I am strategically re-aligning my data modeling timeline from Day 1 onward..."
+        "Enterprise Engineering Phrase (Speak this aloud)": [
+            "My objective is to implement a robust processing architecture to isolate data metrics...",
+            "I am systematically optimizing my logic handling layouts and computational paradigms...",
+            "I am strategically re-aligning my technical progression roadmap from Day 1 onward..."
         ]
     }
-    str_layout.table(pd.DataFrame(transformation_matrix))
+    st.table(pd.DataFrame(phrase_data))
