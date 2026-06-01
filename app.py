@@ -15,7 +15,8 @@ st.markdown("""
     h1, h2, h3 { color: #58a6ff; font-family: 'Helvetica'; }
     .metric-card { background-color: #161b22; padding: 15px; border-radius: 10px; border: 1px solid #30363d; }
     </style>
-    """, unsafe_allow_code=True)
+    '''python
+    """, unsafe_allow_html=True)
 
 # --- SYSTEM DATES ---
 today = datetime.date(2026, 6, 1)
