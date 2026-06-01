@@ -1,7 +1,6 @@
 import streamlit as st
 import datetime
 import pandas as pd
-import time
 
 # --- APP CONFIGURATION ---
 st.set_page_config(page_title="Vamshi's AI Transition 2026", page_icon="🏏", layout="wide")
@@ -15,7 +14,6 @@ st.markdown("""
     h1, h2, h3 { color: #58a6ff; font-family: 'Helvetica'; }
     .metric-card { background-color: #161b22; padding: 15px; border-radius: 10px; border: 1px solid #30363d; }
     </style>
-    '''python
     """, unsafe_allow_html=True)
 
 # --- SYSTEM DATES ---
@@ -29,7 +27,8 @@ st.sidebar.title("🏆 Match Center")
 nav = st.sidebar.radio("Sectors:", [
     "🏠 Dashboard", 
     "📅 7-Month Roadmap", 
-    "🧠 Logic Lab (Cricket Ed.)", 
+    "🧠 Logic Lab (Cricket Ed.)",
+    "💻 Coddy Interactive Hub",
     "💼 Interview & Job Vault", 
     "🗣️ English Fluency Pro"
 ])
@@ -98,12 +97,40 @@ print(is_all_rounder(145, 7.2)) # Output: Selected
     - **R (Refine):** What are the rules? (e.g., Add them all up)
     - **S (Solve):** Write the code ball-by-ball.
     """)
-    
-    st.subheader("🔗 Interactive Sites (Dopamine Raising)")
-    st.markdown("[CheckiO](https://py.checkio.org/) - A game where you solve code to save a world.")
-    st.markdown("[Codewars](https://www.codewars.com/) - Rank up from 'Kyu 8' to 'Kyu 1' like a pro player.")
 
-# --- 4. INTERVIEW & JOB VAULT ---
+# --- 4. CODDY INTERACTIVE HUB (NEW TAB) ---
+elif nav == "💻 Coddy Interactive Hub":
+    st.title("💻 Gamified Learning Tracks (Roadmap-Synced)")
+    st.write("Use this tab to pick up daily badges and coding streaks. These interactive links directly map to your monthly schedule:")
+    
+    st.markdown("---")
+    
+    # Month-by-Month Bite-sized Targets
+    st.subheader("🏏 JUNE TARGET: Python Syntax & Logic Mastery")
+    st.info("🎯 **Goal:** Complete basic arithmetic shortcuts, conditional structures, and iteration engines.")
+    st.markdown("- 🔗 **[Coddy: Core Python Fundamentals Journey](https://coddy.tech/landing/python)** — Teaches variables, operators, loops, and list filtering step-by-step.")
+    st.markdown("- 🔗 **[Coddy: Python Dictionary Masterclass](https://coddy.tech/courses/dictionary_in_python)** — Learn map structures to organize complex data points.")
+    
+    st.subheader("📊 JULY TARGET: Relational Databases & Data Manipulation")
+    st.info("🎯 **Goal:** Learn how to clean data and link relational spreadsheets together.")
+    st.markdown("- 🔗 **[Coddy: Pandas Analytics Module](https://coddy.tech/landing/python/courses)** — Crucial for learning tables, data filtering, and column arrays.")
+    st.markdown("- 🔗 **[Coddy: Interactive SQL Track](https://coddy.tech/)** — Practice structure querying, aggregations, and tables joining live.")
+    
+    st.subheader("📈 AUGUST TARGET: Numerical Engineering & Core Vectors")
+    st.info("🎯 **Goal:** Understand numerical tracking arrays before touching full predictive models.")
+    st.markdown("- 🔗 **[Coddy: NumPy Fundamentals](https://coddy.tech/landing/python/courses)** — Build multidimensional data layouts for statistical equations.")
+    
+    st.subheader("🤖 SEPTEMBER TARGET: Machine Pipelines & API Delivery")
+    st.info("🎯 **Goal:** Hook your programs up to web platforms and large models.")
+    st.markdown("- 🔗 **[Coddy: Connecting APIs in Python](https://coddy.tech/landing/courses/api_in_python)** — Learn data ingestion protocols to supply real-time tracking streams.")
+    st.markdown("- 🔗 **[Coddy: AI Prompt Engineering Gym](https://coddy.tech/)** — Structural training for directing LLM outputs cleanly.")
+    
+    st.subheader("💼 OCTOBER - DECEMBER TARGET: Strategic Interview Blitz")
+    st.info("🎯 **Goal:** Crack algorithmic logic problems and data sorting hurdles.")
+    st.markdown("- 🔗 **[Coddy: Python Technical Interview Series](https://coddy.tech/landing/python/courses)** — 12 core foundational scenarios frequently used by interview boards.")
+    st.markdown("- 🔗 **[Coddy: Data Structures Playbook](https://coddy.tech/landing/python/courses)** — Implement structural data systems like Stacks and Arrays from scratch.")
+
+# --- 5. INTERVIEW & JOB VAULT ---
 elif nav == "💼 Interview & Job Vault":
     st.title("💼 Interview Preparation & Job Reminders")
     st.warning("Note: Job alerts and active tracking will unlock on October 1st, 2026.")
@@ -122,7 +149,7 @@ elif nav == "💼 Interview & Job Vault":
     st.subheader("📈 Job Market Strategy")
     st.write("From Oct 1, we will target roles like: **Junior AI Engineer**, **Associate Data Scientist**, and **Product Analyst**.")
 
-# --- 5. ENGLISH FLUENCY PRO ---
+# --- 6. ENGLISH FLUENCY PRO ---
 elif nav == "🗣️ English Fluency Pro":
     st.title("🗣️ Communication & Fluency")
     st.write("Your current English is clear enough to learn, but we need it 'Interview-Ready'.")
