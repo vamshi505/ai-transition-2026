@@ -3,7 +3,8 @@ import datetime
 import pandas as pd
 import time
 import io
-from gtts import gTTS
+import asyncio
+import edge_tts
 
 # --- 1. STADIUM ARCHITECTURE & INTEL CONFIGURATION ---
 st.set_page_config(
@@ -93,7 +94,7 @@ if 'streak' not in st.session_state: st.session_state.streak = 1
 if 'runs' not in st.session_state: st.session_state.runs = 0
 if 'chat_log' not in st.session_state: st.session_state.chat_log = []
 
-# Initialize all 37 interactive checklist variables in state storage to prevent sync loss
+# Initialize interactive checklist variables in state storage
 for key_idx in range(1, 38):
     state_key = f"chk_{key_idx}"
     if state_key not in st.session_state:
@@ -123,6 +124,16 @@ nav_choice = st.sidebar.radio("NAVIGATE VECTOR SECTORS:", [
     "🗣️ Professional English Tuner"
 ])
 
+# Asynchronous Neural Voice Generator Function
+async def generate_neural_audio(text_payload, voice_id):
+    communicate = edge_tts.Communicate(text_payload, voice_id)
+    audio_buffer = io.BytesIO()
+    async for chunk in communicate.stream():
+        if chunk["type"] == "audio":
+            audio_buffer.write(chunk["data"])
+    audio_buffer.seek(0)
+    return audio_buffer
+
 # --- 6. SECTOR: THE PAVILION (DASHBOARD) ---
 if nav_choice == "🏟️ The Pavilion (Dashboard)":
     st.title("🏟️ Main Command Pavilion")
@@ -140,7 +151,7 @@ if nav_choice == "🏟️ The Pavilion (Dashboard)":
     energy = st.select_slider("Assess structural human remaining runtime power:", options=["0% (Exhausted)", "25% (Fatigued)", "50% (Steady)", "100% (Match Ready)"])
     
     if "0%" in energy:
-        st.error("🚨 CRITICAL FATIGUE LIMIT: Do not attempt compilation scripts tonight. Switch to Voice Arena, run a concept summary audit, and engage recovery sleep patterns immediately.")
+        st.error("🚨 CRITICAL FATIGUE LIMIT: Switch to Voice Arena, run a concept summary audit, and engage recovery sleep patterns immediately.")
     elif "25%" in energy:
         st.warning("⚡ LOW POWER: Restrict operations to checking milestones in the Master Scorecard and tracking pre-linked masterclass video logs.")
     else:
@@ -196,12 +207,11 @@ elif nav_choice == "📅 Complete 7-Month Roadmap":
     </div>
     """, unsafe_allow_html=True)
 
-# --- 8. SECTOR: THE MASTER PROGRESS SCORECARD (EXPLICIT 37 CHECKPOINTS) ---
+# --- 8. SECTOR: THE MASTER PROGRESS SCORECARD ---
 elif nav_choice == "📊 Master Progress Scorecard":
     st.title("📊 Complete 37-Point Interactive Progress Scorecard")
     st.write("Verify every technical requirement across the 2026 development schedule.")
 
-    # JUNE SYLLABUS (1-10)
     st.markdown("<h3 class='crimson-txt'>📅 JUNE: Python Core Foundations & Logic Gates</h3>", unsafe_allow_html=True)
     st.session_state.chk_1 = st.checkbox("Checkpoint 01: Variable Naming Layouts & Memory Allocation Rules", value=st.session_state.chk_1)
     st.session_state.chk_2 = st.checkbox("Checkpoint 02: Core Data Classes (Integers, Floats, Strings, Booleans)", value=st.session_state.chk_2)
@@ -217,7 +227,6 @@ elif nav_choice == "📊 Master Progress Scorecard":
                 "• <a href='https://www.youtube.com/results?search_query=freecodecamp+python+full+course' target='_blank'>FreeCodeCamp: Core Python Deep Dive Training</a></div>", unsafe_allow_html=True)
     st.markdown("---")
 
-    # JULY SYLLABUS (11-17)
     st.markdown("<h3 class='cobalt-txt'>📅 JULY: Relational Infrastructure & SQL Engine Operations</h3>", unsafe_allow_html=True)
     st.session_state.chk_11 = st.checkbox("Checkpoint 11: Schema Design Principles (Primary/Foreign Constraint Architectures)", value=st.session_state.chk_11)
     st.session_state.chk_12 = st.checkbox("Checkpoint 12: Data Extraction Syntax (SELECT, WHERE, LIKE, IN Statements)", value=st.session_state.chk_12)
@@ -226,11 +235,8 @@ elif nav_choice == "📊 Master Progress Scorecard":
     st.session_state.chk_15 = st.checkbox("Checkpoint 15: Structural Groupings (GROUP BY, HAVING Constraints, and Sum/Count Aggregations)", value=st.session_state.chk_15)
     st.session_state.chk_16 = st.checkbox("Checkpoint 16: Pandas Matrix Processing (Converting Tables into High-Speed DataFrames)", value=st.session_state.chk_16)
     st.session_state.chk_17 = st.checkbox("Checkpoint 17: Quality Assurance Cleansing (Null Mapping, dropna, and fillna Routines)", value=st.session_state.chk_17)
-    st.markdown("<div class='video-box'>📺 <b>July Database Architecture Video Logs:</b><br>"
-                "• <a href='https://www.youtube.com/results?search_query=freecodecamp+sql+tutorial' target='_blank'>FreeCodeCamp: SQL Queries and Management Pipelines</a></div>", unsafe_allow_html=True)
+    
     st.markdown("---")
-
-    # AUGUST SYLLABUS (18-24)
     st.markdown("<h3 class='crimson-txt'>📅 AUGUST: Supervised Machine Learning Pipelines</h3>", unsafe_allow_html=True)
     st.session_state.chk_18 = st.checkbox("Checkpoint 18: Continuous Prediction Models (Linear Regression Weight Optimization)", value=st.session_state.chk_18)
     st.session_state.chk_19 = st.checkbox("Checkpoint 19: Classification Boundaries (Logistic Regression Log-Odds & Sigmoid Curves)", value=st.session_state.chk_19)
@@ -239,33 +245,25 @@ elif nav_choice == "📊 Master Progress Scorecard":
     st.session_state.chk_22 = st.checkbox("Checkpoint 22: Feature Scaling Matrices (Mathematical Standardization & Normalization Tasks)", value=st.session_state.chk_22)
     st.session_state.chk_23 = st.checkbox("Checkpoint 23: Validation Set Separation (Implementing Stratified Train-Test Splitting)", value=st.session_state.chk_23)
     st.session_state.chk_24 = st.checkbox("Checkpoint 24: Model Score Calculations (Precision, Recall, and Unified F1 Mechanics)", value=st.session_state.chk_24)
-    st.markdown("<div class='video-box'>📺 <b>August Predictive Analytics Video Logs:</b><br>"
-                "• <a href='https://www.youtube.com/results?search_query=statquest+machine+learning' target='_blank'>StatQuest: Machine Learning Metrics Explained Visually</a></div>", unsafe_allow_html=True)
-    st.markdown("---")
 
-    # SEPTEMBER SYLLABUS (25-31)
+    st.markdown("---")
     st.markdown("<h3 class='cobalt-txt'>📅 SEPTEMBER: Deep Learning & Generative AI Systems</h3>", unsafe_allow_html=True)
-    st.session_state.chk_25 = st.checkbox("Checkpoint 25: Neural Network Mechanics (Backpropagation & Activation Threshold Functions)", value=st.session_state.chk_25)
-    st.session_state.chk_26 = st.checkbox("Checkpoint 26: Transformer Systems (Text Tokenization Modeling & Scaled Dot-Product Attention)", value=st.session_state.chk_26)
-    st.session_state.chk_27 = st.checkbox("Checkpoint 27: Endpoint Ingestion (Integrating Real-Time Payloads into Google Gemini API)", value=st.session_state.chk_27)
-    st.session_state.chk_28 = st.checkbox("Checkpoint 28: Context Prompt Engineering (Few-Shot Conditioning & Structural Output Constraints)", value=st.session_state.chk_28)
+    st.session_state.chk_25 = st.checkbox("Checkpoint 25: Neural Network Mechanics (Backpropagation & Activation Functions)", value=st.session_state.chk_25)
+    st.session_state.chk_26 = st.checkbox("Checkpoint 26: Transformer Systems (Text Tokenization Modeling & Scaled Attention)", value=st.session_state.chk_26)
+    st.session_state.chk_27 = st.checkbox("Checkpoint 27: Endpoint Ingestion (Integrating Payloads into Google Gemini API)", value=st.session_state.chk_27)
+    st.session_state.chk_28 = st.checkbox("Checkpoint 28: Context Prompt Engineering (Few-Shot Conditioning & Structure Labels)", value=st.session_state.chk_28)
     st.session_state.chk_29 = st.checkbox("Checkpoint 29: Capstone Design (Data Parsing Blueprint for Sentiment Recommender Foundations)", value=st.session_state.chk_29)
     st.session_state.chk_30 = st.checkbox("Checkpoint 30: Capstone Execution (Constructing Sentiment Vector Transformers to Parse Text)", value=st.session_state.chk_30)
     st.session_state.chk_31 = st.checkbox("Checkpoint 31: Capstone Hosting (Packing Project Infrastructure onto Streamlit Cloud Backend)", value=st.session_state.chk_31)
-    st.markdown("<div class='video-box'>📺 <b>September Neural Framework Video Logs:</b><br>"
-                "• <a href='https://www.youtube.com/results?search_query=andrej+karpathy+intro+to+llms' target='_blank'>Andrej Karpathy: Building Modern LLM Models From Scratch</a></div>", unsafe_allow_html=True)
-    st.markdown("---")
 
-    # OCTOBER TO DECEMBER PLACEMENT (32-37)
+    st.markdown("---")
     st.markdown("<h3 class='crimson-txt'>📅 OCTOBER - DECEMBER: Whiteboard Algorithms & Placement Operations</h3>", unsafe_allow_html=True)
     st.session_state.chk_32 = st.checkbox("Checkpoint 32: Algorithmic Searching (Coding Iterative Linear & High-Speed Binary Search Loops)", value=st.session_state.chk_32)
     st.session_state.chk_33 = st.checkbox("Checkpoint 33: Sorting Routines (Implementing Custom Bubble Sort & Split Merge Sort Scripts)", value=st.session_state.chk_33)
     st.session_state.chk_34 = st.checkbox("Checkpoint 34: Data Structure Matrix Challenges (Array, String, and HashMap Optimization Paths)", value=st.session_state.chk_34)
     st.session_state.chk_35 = st.checkbox("Checkpoint 35: Resume Optimization (Reframing Support Ticket Metrics into Operations Data Engineering)", value=st.session_state.chk_35)
     st.session_state.chk_36 = st.checkbox("Checkpoint 36: GitHub Repository Presentation (Polishing Readme Blueprints & Structural Code Documentation)", value=st.session_state.chk_36)
-    st.session_state.chk_37 = st.checkbox("Checkpoint 37: Interview Execution Strategy ( Whiteboard Reasoning Drills & Architectural Explanations)", value=st.session_state.chk_37)
-    st.markdown("<div class='video-box'>📺 <b>Placement Acceleration Video Logs:</b><br>"
-                "• <a href='https://www.youtube.com/results?search_query=ml+engineer+interview+questions' target='_blank'>Tech Interview Pro: Cracking Enterprise AI Screening Boards</a></div>", unsafe_allow_html=True)
+    st.session_state.chk_37 = st.checkbox("Checkpoint 37: Interview Execution Strategy (Whiteboard Reasoning Drills & Architectural Explanations)", value=st.session_state.chk_37)
 
     # MASTER REAL-TIME METRIC CALCULATION
     st.markdown("---")
@@ -280,19 +278,11 @@ elif nav_choice == "🧠 The Coding Nets (Logic Lab)":
     st.title("🧠 The Interactive Programmatic Logic Nets")
     st.write("Deconstruct computer science conditional parameters using explicit cricket match scenarios.")
     
-    st.markdown("""
-    ### 🛠️ Problem Solving Strategy: The 'DRS' Cognitive Engine
-    *   **D (Define Inputs):** Map out the variables and values contained inside your system data buckets.
-    *   **R (Refine Boundaries):** Isolate the exact comparison parameters of the constraint rule (e.g. boundary checks).
-    *   **S (Solve Sequentially):** Trace out execution paths step-by-step before committing syntax character changes.
-    """)
-    
     st.subheader("🏟️ Match Scenario: The Tactical Strike Rate Strategy Calculator")
     st.write("Scenario: A batsman reaches a milestone run metric. Calculate their performance rating using the equation:")
     st.latex(r"SR = \frac{\text{Runs}}{\text{Balls}} \times 100")
     
     st.code("""
-# Inspect the script variable layout:
 player_runs = 45
 player_balls = 20
 strike_rate = (player_runs / player_balls) * 100
@@ -309,21 +299,18 @@ else:
     if st.button("Submit Decision Review (DRS)"):
         if sim_guess.strip() == "Explosive":
             st.balloons()
-            st.success("🎯 BOUNDARY OVER THE FENCE! Superb compilation reading. Because 45 / 20 * 100 equals 225.0, the condition resolves as true. +10 Runs committed to your dashboard score!")
+            st.success("🎯 BOUNDARY OVER THE FENCE! +10 Runs committed to your dashboard score!")
             st.session_state.runs += 10
-        elif sim_guess.strip() == "":
-            st.warning("Please type your response into the simulator interface input field first.")
         else:
-            st.error("❌ CLEAN BOWLED STUMPS VIBRATING! Re-verify line 6 parameters. Is 225.0 higher than 200? Yes! Python bypasses the else clause entirely. Correct syntax spelling and submit again.")
+            st.error("❌ CLEAN BOWLED STUMPS VIBRATING! Correct syntax spelling and submit again.")
 
-# --- 10. SECTOR: DUAL-AGENT INTELLIGENCE CORE (VOICE ENGINE READY) ---
+# --- 10. SECTOR: DUAL-AGENT INTELLIGENCE CORE (PREMIUM NEURAL AUDIO ADDED) ---
 elif nav_choice == "💬 Chat Engine (Dual Agent Voice Mode)":
-    st.title("💬 Dual-Agent Vocal Intelligence Workspace")
-    st.write("Toggle between Deadpool's high-energy coaching or JARVIS's advanced technical execution protocols.")
+    st.title("💬 Talk to Deadpool & JARVIS (Premium Voice Mode)")
+    st.write("Toggle profiles to experience realistic, high-fidelity male voice simulation models.")
     st.markdown("---")
     
-    # SYSTEM INTERFACE CONFIGURATION TABS FOR VOICE PERSONAS
-    agent_selector = st.radio("SELECT ACTIVE CORE INTELLIGENCE PROFILE:", ["🔴 Deadpool (Sarcastic AI Coach Mode)", "🤖 JARVIS (Elite Technical Instructor Mode)"])
+    agent_selector = st.radio("SELECT ACTIVE CORE INTELLIGENCE PROFILE:", ["🔴 Deadpool (Sarcastic Male AI Coach)", "🤖 JARVIS (Elite British Tech Instructor)"])
     
     user_prompt_entry = st.chat_input("Transmit transmission payload instructions to active agent...")
     
@@ -331,17 +318,13 @@ elif nav_choice == "💬 Chat Engine (Dual Agent Voice Mode)":
         st.session_state.chat_log.append(f"Vamshi: {user_prompt_entry}")
         
         if "GEMINI_API_KEY" not in st.secrets:
-            system_voice_response = (
-                "System configuration fault: GEMINI_API_KEY identifier is missing from server deployment secrets. "
-                "Access your Streamlit Cloud Dashboard, tap Settings, open Secrets tab, and mount the active key variable."
-            )
+            system_voice_response = "System configuration fault: GEMINI_API_KEY identifier is missing from server deployment secrets."
             st.session_state.chat_log.append(f"System Matrix: {system_voice_response}")
         else:
             try:
                 import google.generativeai as live_genai
                 live_genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
                 
-                # Dynamic Model Auto-Selector Array (Protects endpoint against routing mutations)
                 if 'active_model_str' not in st.session_state:
                     try:
                         valid_models = [m.name for m in live_genai.list_models() if 'generateContent' in m.supported_generation_methods]
@@ -349,19 +332,19 @@ elif nav_choice == "💬 Chat Engine (Dual Agent Voice Mode)":
                         elif 'models/gemini-pro' in valid_models: st.session_state.active_model_str = 'gemini-pro'
                         else: st.session_state.active_model_str = valid_models[0]
                     except:
-                        st.session_state.active_model_str = 'gemini-pro' # Absolute legacy backup
+                        st.session_state.active_model_str = 'gemini-pro'
                 
                 llm_engine_instance = live_genai.GenerativeModel(st.session_state.active_model_str)
                 
-                # DYNAMIC PERSONA MATRIX CONFIGURATION
-                if agent_selector == "🔴 Deadpool (Sarcastic AI Coach Mode)":
+                # CHOOSE THE PRECISE NEURAL GENDER ID & DIALECTS
+                if agent_selector == "🔴 Deadpool (Sarcastic Male AI Coach)":
                     system_conditioning_directives = (
                         "You are Deadpool, the hilarious, fast-talking, highly sarcastic mercenary who is also a deeply supportive, expert AI coding mentor. "
                         "You are coaching Vamshi, an absolute beginner from an EEE background who balances an intense 12-hour customer care shift "
                         "at Tech Mahindra. Always reply using Deadpool's signature comic book voice, address him as Vamshi, keep motivation at absolute max, and frame explanations using clever cricket analogies. "
                         f"User instruction payload: {user_prompt_entry}"
                     )
-                    accent_locale_tld = 'com' # Rugged standard accent profile
+                    neural_voice_id = 'en-US-GuyNeural'  # Gritty, robust, expressive American male voice
                     speaker_identity_label = "Deadpool ⚔️"
                 else:
                     system_conditioning_directives = (
@@ -370,26 +353,24 @@ elif nav_choice == "💬 Chat Engine (Dual Agent Voice Mode)":
                         "Provide responses with immaculate professional engineering grammar, structured data breakdowns, clean enterprise coding logic architectures, and absolute clarity. "
                         f"Technical query payload: {user_prompt_entry}"
                     )
-                    accent_locale_tld = 'co.uk' # Crisp professional British accent profile
+                    neural_voice_id = 'en-GB-OliverNeural'  # Crisp, flawless, sophisticated British male butler voice
                     speaker_identity_label = "JARVIS 🤖"
                 
-                # Execute inference pipeline payload
+                # Run AI Inference
                 inferred_response_data = llm_engine_instance.generate_content(system_conditioning_directives)
                 agent_text_reply = inferred_response_data.text
                 
-                # --- SYNCHRONIZED TEXT-TO-SPEECH AUDIO ACCENT ENGINE ---
-                with st.spinner("⚡ Encoding synthesized vocal frequencies..."):
-                    vocal_audio_bytes_stream = io.BytesIO()
-                    speech_synthesis_engine = gTTS(text=agent_text_reply, lang='en', tld=accent_locale_tld, slow=False)
-                    speech_synthesis_engine.write_to_fp(vocal_audio_bytes_stream)
-                    st.audio(vocal_audio_bytes_stream, format='audio/mp3', autoplay=True) # Direct operational audio dispatch
+                # --- ASYNC NEURAL VOICE PIPELINE FOR EXPERT AUDIO ---
+                with st.spinner("⚡ Tuning audio frequencies..."):
+                    audio_stream = asyncio.run(generate_neural_audio(agent_text_reply, neural_voice_id))
+                    st.audio(audio_stream, format='audio/mp3', autoplay=True)
                 
                 st.session_state.chat_log.append(f"{speaker_identity_label}: {agent_text_reply}")
                 
             except Exception as execution_fault_anomaly:
-                st.session_state.chat_log.append(f"Fault Diagnostic: Network interface threw exception code -> {str(execution_fault_anomaly)}")
+                st.session_state.chat_log.append(f"Fault Diagnostic: Network interface exception -> {str(execution_fault_anomaly)}")
 
-    # Render synchronized historical chat logs using distinct interface HUD formatting
+    # Display beautifully grouped messaging components
     for historical_msg in st.session_state.chat_log:
         if historical_msg.startswith("Vamshi:"):
             st.markdown(f"🧑 **{historical_msg}**")
@@ -403,19 +384,16 @@ elif nav_choice == "💬 Chat Engine (Dual Agent Voice Mode)":
 # --- 11. SECTOR: PROFESSIONAL ENGLISH TUNER ---
 elif nav_choice == "🗣️ Professional English Tuner":
     st.title("🗣️ Technical Interview Communication Coach")
-    st.write("Refine communication protocols from casual baseline states up to professional production presentation frameworks.")
+    st.write("Refine communication protocols from casual baseline states up to professional presentation frameworks.")
     
     st.markdown("""
     <div class='jarvis-card'>
         <h3 class='cobalt-txt'>🎤 The Daily 2-Minute Vocal Performance Tuning Routine</h3>
         <p>1. Launch the native system audio tracking application on your mobile device terminal.</p>
-        <p>2. Engage record, and provide an unscripted explanation in English of <b>how variable lists or conditional branches operate</b> as if addressing an executive engineering board director.</p>
-        <p>3. Review the captured telemetry. Identify tracking hesitation intervals and repetitive tokens. Correct phrasing pathways and re-execute. This routine builds neurological data mapping confidence at twice the velocity of passive documentation reading.</p>
+        <p>2. Engage record, and provide an unscripted explanation in English of <b>how variable lists or conditional branches operate</b> as if addressing an engineering director.</p>
+        <p>3. Review the captured telemetry. Identify hesitation intervals, correct phrasing pathways, and re-execute.</p>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.subheader("📋 Corporate Communications Transformation Matrix")
-    st.write("Utilize this parsing framework to replace informal conversational data with clean developer phrasing patterns:")
     
     phrase_translation_dictionary = {
         "Casual Conversational Baseline Phrases (Avoid in Technical Mocks)": [
