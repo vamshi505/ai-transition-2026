@@ -2,3 +2,4 @@ streamlit
 pandas
 google-generativeai
 edge-tts
+streamlit-mic-recorder
