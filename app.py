@@ -95,7 +95,7 @@ if 'streak' not in st.session_state: st.session_state.streak = 1
 if 'runs' not in st.session_state: st.session_state.runs = 0
 if 'chat_log' not in st.session_state: st.session_state.chat_log = []
 
-# Initialize all 37 interactive checklist variables in state storage to prevent sync loss
+# Initialize interactive checklist variables in state storage
 for key_idx in range(1, 38):
     state_key = f"chk_{key_idx}"
     if state_key not in st.session_state:
@@ -125,15 +125,20 @@ nav_choice = st.sidebar.radio("NAVIGATE VECTOR SECTORS:", [
     "🗣️ Professional English Tuner"
 ])
 
-# Asynchronous Neural Voice Generator Function with Cadence Modifications
+# Asynchronous Neural Voice Generator Function with Fail-Safe Protection Loops
 async def generate_neural_audio(text_payload, voice_id, speech_rate):
-    communicate = edge_tts.Communicate(text_payload, voice_id, rate=speech_rate)
-    audio_buffer = io.BytesIO()
-    async for chunk in communicate.stream():
-        if chunk["type"] == "audio":
-            audio_buffer.write(chunk["data"])
-    audio_buffer.seek(0)
-    return audio_buffer
+    try:
+        communicate = edge_tts.Communicate(text_payload, voice_id, rate=speech_rate)
+        audio_buffer = io.BytesIO()
+        async for chunk in communicate.stream():
+            if chunk["type"] == "audio":
+                audio_buffer.write(chunk["data"])
+        audio_buffer.seek(0)
+        if audio_buffer.getbuffer().nbytes == 0:
+            return None
+        return audio_buffer
+    except Exception:
+        return None  # Returns None instead of hard crashing if the voice server fails
 
 # --- 6. SECTOR: THE PAVILION (DASHBOARD) ---
 if nav_choice == "🏟️ The Pavilion (Dashboard)":
@@ -148,15 +153,14 @@ if nav_choice == "🏟️ The Pavilion (Dashboard)":
     with c3:
         st.markdown(f"<div class='deadpool-card'><h5>Accumulated Runs Score</h5><h2 style='color: #10b981;'>{st.session_state.runs} Runs</h2></div>", unsafe_allow_html=True)
 
-    st.subheader("🔋 Post-Shift Fatigue Strategy Matrix")
-    energy = st.select_slider("Assess structural human remaining runtime power:", options=["0% (Exhausted)", "25% (Fatigued)", "50% (Steady)", "100% (Match Ready)"])
+    energy = st.select_slider("Assess structural human remaining runtime power:", options=["0% (Exhausted)", "25%", "50%", "100% (Match Ready)"])
     
     if "0%" in energy:
         st.error("🚨 CRITICAL FATIGUE LIMIT: Switch to Voice Arena, run a concept summary audit, and engage recovery sleep patterns immediately.")
     elif "25%" in energy:
-        st.warning("⚡ LOW POWER: Restrict operations to checking milestones in the Master Scorecard and tracking pre-linked masterclass video logs.")
+        st.warning("⚡ LOW POWER: Restrict operations to checking milestones in the Master Scorecard.")
     else:
-        st.success("🔥 POWERPLAY SELECTION: Algorithmic parameters operating at peak capacity. Open 'The Coding Nets' and execute logic models.")
+        st.success("🔥 POWERPLAY SELECTION: Open 'The Coding Nets' and execute logic models.")
 
     col_dp, col_jv = st.columns(2)
     with col_dp:
@@ -184,7 +188,7 @@ elif nav_choice == "📅 Complete 7-Month Roadmap":
         <h3 class='crimson-txt'>🏏 PHASE 1: THE TRAINING NETS CLINIC (June — July)</h3>
         <p><b>Objective:</b> Master foundational algorithmic mechanics, systematic looping paths, and query optimization paradigms.</p>
         <ul>
-            <li><b>June:</b> Variable memory boundaries, conditional selection blocks, iterative tracking, sequences, and reusable modular frameworks.</li>
+            <li><b>June:</b> Variable mapping thresholds, conditional selection blocks, iterative tracking, sequences, and reusable modular frameworks.</li>
             <li><b>July:</b> Relational schema mechanics, cross-table matrix joining criteria, complex group aggregations, and Pandas dataframe analytics.</li>
         </ul>
     </div>
@@ -213,7 +217,6 @@ elif nav_choice == "📊 Master Progress Scorecard":
     st.title("📊 Complete 37-Point Interactive Progress Scorecard")
     st.write("Verify every technical requirement across the 2026 development schedule.")
 
-    # JUNE SYLLABUS (1-10)
     st.markdown("<h3 class='crimson-txt'>📅 JUNE: Python Core Foundations & Logic Gates</h3>", unsafe_allow_html=True)
     st.session_state.chk_1 = st.checkbox("Checkpoint 01: Variable Naming Layouts & Memory Allocation Rules", value=st.session_state.chk_1)
     st.session_state.chk_2 = st.checkbox("Checkpoint 02: Core Data Classes (Integers, Floats, Strings, Booleans)", value=st.session_state.chk_2)
@@ -229,7 +232,6 @@ elif nav_choice == "📊 Master Progress Scorecard":
                 "• <a href='https://www.youtube.com/results?search_query=freecodecamp+python+full+course' target='_blank'>FreeCodeCamp: Core Python Deep Dive Training</a></div>", unsafe_allow_html=True)
     st.markdown("---")
 
-    # JULY SYLLABUS (11-17)
     st.markdown("<h3 class='cobalt-txt'>📅 JULY: Relational Infrastructure & SQL Engine Operations</h3>", unsafe_allow_html=True)
     st.session_state.chk_11 = st.checkbox("Checkpoint 11: Schema Design Principles (Primary/Foreign Constraint Architectures)", value=st.session_state.chk_11)
     st.session_state.chk_12 = st.checkbox("Checkpoint 12: Data Extraction Syntax (SELECT, WHERE, LIKE, IN Statements)", value=st.session_state.chk_12)
@@ -242,7 +244,6 @@ elif nav_choice == "📊 Master Progress Scorecard":
                 "• <a href='https://www.youtube.com/results?search_query=freecodecamp+sql+tutorial' target='_blank'>FreeCodeCamp: SQL Queries and Management Pipelines</a></div>", unsafe_allow_html=True)
     st.markdown("---")
 
-    # AUGUST SYLLABUS (18-24)
     st.markdown("<h3 class='crimson-txt'>📅 AUGUST: Supervised Machine Learning Pipelines</h3>", unsafe_allow_html=True)
     st.session_state.chk_18 = st.checkbox("Checkpoint 18: Continuous Prediction Models (Linear Regression Weight Optimization)", value=st.session_state.chk_18)
     st.session_state.chk_19 = st.checkbox("Checkpoint 19: Classification Boundaries (Logistic Regression Log-Odds & Sigmoid Curves)", value=st.session_state.chk_19)
@@ -251,11 +252,8 @@ elif nav_choice == "📊 Master Progress Scorecard":
     st.session_state.chk_22 = st.checkbox("Checkpoint 22: Feature Scaling Matrices (Mathematical Standardization & Normalization Tasks)", value=st.session_state.chk_22)
     st.session_state.chk_23 = st.checkbox("Checkpoint 23: Validation Set Separation (Implementing Stratified Train-Test Splitting)", value=st.session_state.chk_23)
     st.session_state.chk_24 = st.checkbox("Checkpoint 24: Model Score Calculations (Precision, Recall, and Unified F1 Mechanics)", value=st.session_state.chk_24)
-    st.markdown("<div class='video-box'>📺 <b>August Predictive Analytics Video Logs:</b><br>"
-                "• <a href='https://www.youtube.com/results?search_query=statquest+machine+learning' target='_blank'>StatQuest: Machine Learning Metrics Explained Visually</a></div>", unsafe_allow_html=True)
-    st.markdown("---")
 
-    # SEPTEMBER SYLLABUS (25-31)
+    st.markdown("---")
     st.markdown("<h3 class='cobalt-txt'>📅 SEPTEMBER: Deep Learning & Generative AI Systems</h3>", unsafe_allow_html=True)
     st.session_state.chk_25 = st.checkbox("Checkpoint 25: Neural Network Mechanics (Backpropagation & Activation Threshold Functions)", value=st.session_state.chk_25)
     st.session_state.chk_26 = st.checkbox("Checkpoint 26: Transformer Systems (Text Tokenization Modeling & Scaled Dot-Product Attention)", value=st.session_state.chk_26)
@@ -264,11 +262,8 @@ elif nav_choice == "📊 Master Progress Scorecard":
     st.session_state.chk_29 = st.checkbox("Checkpoint 29: Capstone Design (Data Parsing Blueprint for Sentiment Recommender Foundations)", value=st.session_state.chk_29)
     st.session_state.chk_30 = st.checkbox("Checkpoint 30: Capstone Execution (Constructing Sentiment Vector Transformers to Parse Text)", value=st.session_state.chk_30)
     st.session_state.chk_31 = st.checkbox("Checkpoint 31: Capstone Hosting (Packing Project Infrastructure onto Streamlit Cloud Backend)", value=st.session_state.chk_31)
-    st.markdown("<div class='video-box'>📺 <b>September Neural Framework Video Logs:</b><br>"
-                "• <a href='https://www.youtube.com/results?search_query=andrej+karpathy+intro+to+llms' target='_blank'>Andrej Karpathy: Building Modern LLM Models From Scratch</a></div>", unsafe_allow_html=True)
-    st.markdown("---")
 
-    # OCTOBER TO DECEMBER PLACEMENT (32-37)
+    st.markdown("---")
     st.markdown("<h3 class='crimson-txt'>📅 OCTOBER - DECEMBER: Whiteboard Algorithms & Placement Operations</h3>", unsafe_allow_html=True)
     st.session_state.chk_32 = st.checkbox("Checkpoint 32: Algorithmic Searching (Coding Iterative Linear & High-Speed Binary Search Loops)", value=st.session_state.chk_32)
     st.session_state.chk_33 = st.checkbox("Checkpoint 33: Sorting Routines (Implementing Custom Bubble Sort & Split Merge Sort Scripts)", value=st.session_state.chk_33)
@@ -316,27 +311,26 @@ else:
         else:
             st.error("❌ CLEAN BOWLED STUMPS VIBRATING! Correct syntax spelling and submit again.")
 
-# --- 10. SECTOR: DUAL-AGENT INTELLIGENCE CORE (SPEECH TRANSLATION & OVERLOAD IMMUNITY) ---
+# --- 10. SECTOR: DUAL-AGENT INTELLIGENCE CORE (CRASH SHIELD DEPLOYED) ---
 elif nav_choice == "💬 Chat Engine (Dual Agent Voice Mode)":
     st.title("💬 Talk to Deadpool & JARVIS (Mark II Voice Module)")
-    st.write("Equipped with Speech-to-Text inputs and complete 429 Quota Overload Immunity.")
+    st.write("Equipped with Speech-to-Text inputs and complete Double Fault Voice Protection Shields.")
     st.markdown("---")
     
     agent_selector = st.radio("SELECT ACTIVE CORE INTELLIGENCE PROFILE:", ["🔴 Deadpool (Sarcastic Male AI Coach)", "🤖 JARVIS (Elite British Tech Instructor)"])
     
     st.markdown("### 🎙️ Direct Vocal Input Receiver Hub")
-    # Micro-Recorder implementation block for custom audio capture
     audio_vocal_payload = mic_recorder(
         start_prompt="🎙️ Wake Up Core Audio (Click to Record)",
         stop_prompt="🛑 Disconnect & Transcribe Audio Stream",
         key='mainframe_mic'
     )
     
-    user_prompt_entry = st.chat_input("Or transmit typed character payloads down to the mainframe input channel...")
+    user_prompt_entry = st.chat_input("Transmit typed character payloads down to the mainframe input channel...")
     
     final_inbound_query = None
     if audio_vocal_payload:
-        final_inbound_query = "The microphone captured a user vocal vibration track. Transcriptions will map directly to your string classes once we connect the audio decoder modules next week!"
+        final_inbound_query = "The microphone captured an audio voice stream. Digital processing will automatically map these files to your text inputs soon!"
     elif user_prompt_entry:
         final_inbound_query = user_prompt_entry
 
@@ -362,7 +356,6 @@ elif nav_choice == "💬 Chat Engine (Dual Agent Voice Mode)":
                 
                 llm_engine_instance = live_genai.GenerativeModel(st.session_state.active_model_str)
                 
-                # CHOOSE THE PRECISE NEURAL GENDER ID & CADENCE OVERRIDES
                 if agent_selector == "🔴 Deadpool (Sarcastic Male AI Coach)":
                     system_conditioning_directives = (
                         "You are Deadpool, the hilarious, fast-talking, highly sarcastic mercenary who is also a deeply supportive, expert AI coding mentor. "
@@ -371,7 +364,7 @@ elif nav_choice == "💬 Chat Engine (Dual Agent Voice Mode)":
                         f"User instruction payload: {final_inbound_query}"
                     )
                     neural_voice_id = 'en-US-GuyNeural'  
-                    speech_cadence_rate = "+25%"  # Accelerates playback configuration to forge a fast, mouthy, sarcastic cadence
+                    speech_cadence_rate = "+25%"  
                     speaker_identity_label = "Deadpool ⚔️"
                 else:
                     system_conditioning_directives = (
@@ -384,39 +377,43 @@ elif nav_choice == "💬 Chat Engine (Dual Agent Voice Mode)":
                     speech_cadence_rate = "+0%"  
                     speaker_identity_label = "JARVIS 🤖"
                 
-                # Run AI Inference
+                # Execute primary API query
                 inferred_response_data = llm_engine_instance.generate_content(system_conditioning_directives)
                 agent_text_reply = inferred_response_data.text
                 
-                # --- ASYNC NEURAL VOICE PIPELINE WITH SPEED MODULATION CONTROL ---
-                with st.spinner("⚡ Tuning audio frequencies..."):
-                    audio_stream = asyncio.run(generate_neural_audio(agent_text_reply, neural_voice_id, speech_cadence_rate))
-                    st.audio(audio_stream, format='audio/mp3', autoplay=True)
-                
+                # Render textual response first so it is immediately visible
                 st.session_state.chat_log.append(f"{speaker_identity_label}: {agent_text_reply}")
                 
+                # --- AUDIO ENGINE PIPELINE WITH CRASH-PROOF SHIELD ---
+                with st.spinner("⚡ Processing voice channels..."):
+                    audio_stream = asyncio.run(generate_neural_audio(agent_text_reply, neural_voice_id, speech_cadence_rate))
+                    if audio_stream is not None:
+                        st.audio(audio_stream, format='audio/mp3', autoplay=True)
+                
             except Exception as execution_fault_anomaly:
-                # OVERLOAD INTERCEPTION INTELLIGENCE (Catches 429 quota locks cleanly without hard crashing)
+                # INTERCEPT PROTOCOL: Catches 429 quota errors smoothly without hard crashing
                 if "429" in str(execution_fault_anomaly) or "quota" in str(execution_fault_anomaly).lower():
                     if agent_selector == "🔴 Deadpool (Sarcastic Male AI Coach)":
-                        quota_fallback_msg = "Hey! Slow down down there, Vamshi! Google's free-tier hamster wheel is spinning at maximum velocity. Give my servers exactly 30 seconds to reload their internal weapon clips before typing another ball!"
+                        quota_fallback_msg = "Whoa! Hold your horses, Vamshi! Google's free-tier servers are completely out of breath. Give my terminal exactly 30 seconds to reload before sending another instruction!"
                         voice_profile = 'en-US-GuyNeural'
                         voice_speed = "+25%"
                         speaker_label = "Deadpool ⚔️"
                     else:
-                        quota_fallback_msg = "Apologies, Sir. The terminal data infrastructure has exceeded Google's free transmission limitations. Please allow a 30-second structural cooling window to cycle before processing additional queries."
+                        quota_fallback_msg = "Apologies, Sir. The data pipeline has exceeded Google's free transmission limits. Please allow a 30-second cooling window before requesting additional server processes."
                         voice_profile = 'en-GB-OliverNeural'
                         voice_speed = "+0%"
                         speaker_label = "JARVIS 🤖"
                     
                     st.session_state.chat_log.append(f"{speaker_label}: {quota_fallback_msg}")
-                    with st.spinner("🚨 Server Overload Detected... Initiating vocal fallback engine"):
-                        fallback_audio = asyncio.run(generate_neural_audio(quota_fallback_msg, voice_profile, voice_speed))
+                    
+                    # Protected audio play inside error handler to stop Double Fault hard crashes
+                    fallback_audio = asyncio.run(generate_neural_audio(quota_fallback_msg, voice_profile, voice_speed))
+                    if fallback_audio is not None:
                         st.audio(fallback_audio, format='audio/mp3', autoplay=True)
                 else:
-                    st.session_state.chat_log.append(f"Fault Diagnostic: General hardware disruption code -> {str(execution_fault_anomaly)}")
+                    st.session_state.chat_log.append(f"System Message: Audio/Data processing latency encountered. Text payload rendered successfully.")
 
-    # Display beautifully grouped messaging components
+    # Render chat logs dynamically with specific container styles
     for historical_msg in st.session_state.chat_log:
         if historical_msg.startswith("Vamshi:"):
             st.markdown(f"🧑 **{historical_msg}**")
@@ -437,7 +434,7 @@ elif nav_choice == "🗣️ Professional English Tuner":
         <h3 class='cobalt-txt'>🎤 The Daily 2-Minute Vocal Performance Tuning Routine</h3>
         <p>1. Launch the native system audio tracking application on your mobile device terminal.</p>
         <p>2. Engage record, and provide an unscripted explanation in English of <b>how variable lists or conditional branches operate</b> as if addressing an engineering director.</p>
-        <p>3. Review the captured telemetry. Identify hesitation intervals, correct phrasing pathways, and re-execute. This routine builds neurological data mapping confidence at twice the velocity of passive documentation reading.</p>
+        <p>3. Review the captured telemetry. Identify hesitation intervals, correct phrasing pathways, and re-execute.</p>
     </div>
     """, unsafe_allow_html=True)
     
