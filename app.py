@@ -124,9 +124,9 @@ nav_choice = st.sidebar.radio("NAVIGATE VECTOR SECTORS:", [
     "🗣️ Professional English Tuner"
 ])
 
-# Asynchronous Neural Voice Generator Function
-async def generate_neural_audio(text_payload, voice_id):
-    communicate = edge_tts.Communicate(text_payload, voice_id)
+# Asynchronous Neural Voice Generator Function with Cadence Modifications
+async def generate_neural_audio(text_payload, voice_id, speech_rate):
+    communicate = edge_tts.Communicate(text_payload, voice_id, rate=speech_rate)
     audio_buffer = io.BytesIO()
     async for chunk in communicate.stream():
         if chunk["type"] == "audio":
@@ -147,15 +147,14 @@ if nav_choice == "🏟️ The Pavilion (Dashboard)":
     with c3:
         st.markdown(f"<div class='deadpool-card'><h5>Accumulated Runs Score</h5><h2 style='color: #10b981;'>{st.session_state.runs} Runs</h2></div>", unsafe_allow_html=True)
 
-    st.subheader("🔋 Post-Shift Fatigue Strategy Matrix")
-    energy = st.select_slider("Assess structural human remaining runtime power:", options=["0% (Exhausted)", "25% (Fatigued)", "50% (Steady)", "100% (Match Ready)"])
+    energy = st.select_slider("Assess structural human remaining runtime power:", options=["0% (Exhausted)", "25%", "50%", "100% (Match Ready)"])
     
     if "0%" in energy:
         st.error("🚨 CRITICAL FATIGUE LIMIT: Switch to Voice Arena, run a concept summary audit, and engage recovery sleep patterns immediately.")
     elif "25%" in energy:
-        st.warning("⚡ LOW POWER: Restrict operations to checking milestones in the Master Scorecard and tracking pre-linked masterclass video logs.")
+        st.warning("⚡ LOW POWER: Restrict operations to checking milestones in the Master Scorecard.")
     else:
-        st.success("🔥 POWERPLAY SELECTION: Algorithmic parameters operating at peak capacity. Open 'The Coding Nets' and execute logic models.")
+        st.success("🔥 POWERPLAY SELECTION: Open 'The Coding Nets' and execute logic models.")
 
     col_dp, col_jv = st.columns(2)
     with col_dp:
@@ -304,10 +303,10 @@ else:
         else:
             st.error("❌ CLEAN BOWLED STUMPS VIBRATING! Correct syntax spelling and submit again.")
 
-# --- 10. SECTOR: DUAL-AGENT INTELLIGENCE CORE (PREMIUM NEURAL AUDIO ADDED) ---
+# --- 10. SECTOR: DUAL-AGENT INTELLIGENCE CORE (VOICE MODULATION LAYER ON) ---
 elif nav_choice == "💬 Chat Engine (Dual Agent Voice Mode)":
-    st.title("💬 Talk to Deadpool & JARVIS (Premium Voice Mode)")
-    st.write("Toggle profiles to experience realistic, high-fidelity male voice simulation models.")
+    st.title("💬 Talk to Deadpool & JARVIS (Sarcastic Cadence Engaged)")
+    st.write("Voices are now structurally fine-tuned. Deadpool leverages rapid-fire speech modulations.")
     st.markdown("---")
     
     agent_selector = st.radio("SELECT ACTIVE CORE INTELLIGENCE PROFILE:", ["🔴 Deadpool (Sarcastic Male AI Coach)", "🤖 JARVIS (Elite British Tech Instructor)"])
@@ -336,7 +335,7 @@ elif nav_choice == "💬 Chat Engine (Dual Agent Voice Mode)":
                 
                 llm_engine_instance = live_genai.GenerativeModel(st.session_state.active_model_str)
                 
-                # CHOOSE THE PRECISE NEURAL GENDER ID & DIALECTS
+                # CHOOSE THE PRECISE NEURAL GENDER ID & CADENCE OVERRIDES
                 if agent_selector == "🔴 Deadpool (Sarcastic Male AI Coach)":
                     system_conditioning_directives = (
                         "You are Deadpool, the hilarious, fast-talking, highly sarcastic mercenary who is also a deeply supportive, expert AI coding mentor. "
@@ -344,7 +343,8 @@ elif nav_choice == "💬 Chat Engine (Dual Agent Voice Mode)":
                         "at Tech Mahindra. Always reply using Deadpool's signature comic book voice, address him as Vamshi, keep motivation at absolute max, and frame explanations using clever cricket analogies. "
                         f"User instruction payload: {user_prompt_entry}"
                     )
-                    neural_voice_id = 'en-US-GuyNeural'  # Gritty, robust, expressive American male voice
+                    neural_voice_id = 'en-US-GuyNeural'  
+                    speech_cadence_rate = "+25%"  # Accelerates playback configuration to forge a fast, mouthy, sarcastic cadence
                     speaker_identity_label = "Deadpool ⚔️"
                 else:
                     system_conditioning_directives = (
@@ -353,16 +353,17 @@ elif nav_choice == "💬 Chat Engine (Dual Agent Voice Mode)":
                         "Provide responses with immaculate professional engineering grammar, structured data breakdowns, clean enterprise coding logic architectures, and absolute clarity. "
                         f"Technical query payload: {user_prompt_entry}"
                     )
-                    neural_voice_id = 'en-GB-OliverNeural'  # Crisp, flawless, sophisticated British male butler voice
+                    neural_voice_id = 'en-GB-OliverNeural'  
+                    speech_cadence_rate = "+0%"  # Maintains precise, deliberate aristocratic butler synchronization
                     speaker_identity_label = "JARVIS 🤖"
                 
                 # Run AI Inference
                 inferred_response_data = llm_engine_instance.generate_content(system_conditioning_directives)
                 agent_text_reply = inferred_response_data.text
                 
-                # --- ASYNC NEURAL VOICE PIPELINE FOR EXPERT AUDIO ---
+                # --- ASYNC NEURAL VOICE PIPELINE WITH SPEED MODULATION CONTROL ---
                 with st.spinner("⚡ Tuning audio frequencies..."):
-                    audio_stream = asyncio.run(generate_neural_audio(agent_text_reply, neural_voice_id))
+                    audio_stream = asyncio.run(generate_neural_audio(agent_text_reply, neural_voice_id, speech_cadence_rate))
                     st.audio(audio_stream, format='audio/mp3', autoplay=True)
                 
                 st.session_state.chat_log.append(f"{speaker_identity_label}: {agent_text_reply}")
